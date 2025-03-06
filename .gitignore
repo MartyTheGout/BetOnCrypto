@@ -1,8 +1,7 @@
 
 ## User data
-xcuserdata/
-project.xcworkspace/xcshareddata/
-
+BetOnCrypto.xcodeproj/xcuserdata/
+BetOnCrypto.xcodeproj/project.xcworkspace/xcshareddata/
 
 ## App packaging
 *.ipa
