@@ -7,9 +7,13 @@
 
 import UIKit
 
-class CryptoExchangeViewController : UIViewController {
+class CryptoExchangeViewController : BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(#function)
+    }
+    
+    override func configureViewDetails() {
+        view.backgroundColor = .white
     }
 }

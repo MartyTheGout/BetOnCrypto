@@ -10,14 +10,25 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-
+    var errorWindow : UIWindow?
+    
+    let networkMonitor = NetworkMonitor()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
+        
+        networkMonitor.startMonitoring { [weak self] status in
+            switch status {
+            case .satisfied:
+                self?.removeNoInternetViewOnWindow(on: windowScene)
+            case .unsatisfied:
+                self?.loadNoInternetViewOnWindow(on: windowScene)
+            default: break
+            }
+        }
+        
         window.rootViewController = CryptoExchangeViewController()
         window.makeKeyAndVisible()
     }
@@ -53,3 +64,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 }
 
+extension SceneDelegate {
+    private func loadNoInternetViewOnWindow(on windowScene: UIWindowScene) {
+        let window = UIWindow(windowScene: windowScene)
+        window.windowLevel = .statusBar
+        window.makeKeyAndVisible()
+        window.rootViewController = NoInternetViewController()
+        self.errorWindow = window
+    }
+    
+    private func removeNoInternetViewOnWindow(on windowScene: UIWindowScene) {
+        errorWindow?.resignKey()
+        errorWindow?.isHidden = true
+        errorWindow = nil
+    }
+}
