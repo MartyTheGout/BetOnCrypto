@@ -25,6 +25,10 @@ class BaseView: UIView, ViewEssential3 {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /*
+     This is for helping to track memory-leak-issue.
+     TODO: Be sure to comment-out, when the app is not under developing / testing
+     */
     deinit {
         print(#function, "de-allocated from memory")
     }
@@ -35,6 +39,11 @@ class BaseView: UIView, ViewEssential3 {
 }
 
 class BaseViewController: UIViewController, ViewEssential3 {
+    
+    /*
+     This is for helping to track memory-leak-issue.
+     TODO: Be sure to comment-out, when the app is not under developing / testing
+     */
     deinit {
         print(#function, "de-allocated from memory")
     }
