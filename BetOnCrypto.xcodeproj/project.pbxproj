@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		4016C4322D79B1670080ACAF /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4016C4312D79B1670080ACAF /* .gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		4016C3962D79AF620080ACAF /* BetOnCrypto.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BetOnCrypto.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4016C4312D79B1670080ACAF /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -45,6 +50,7 @@
 		4016C38D2D79AF620080ACAF = {
 			isa = PBXGroup;
 			children = (
+				4016C4312D79B1670080ACAF /* .gitignore */,
 				4016C3982D79AF620080ACAF /* BetOnCrypto */,
 				4016C3972D79AF620080ACAF /* Products */,
 			);
@@ -122,6 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4016C4322D79B1670080ACAF /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
