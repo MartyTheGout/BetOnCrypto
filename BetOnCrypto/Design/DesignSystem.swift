@@ -12,16 +12,28 @@ enum DesignSystem {
         enum Tint : String {
             case main = "334155"
             case submain = "8E99A8"
+            
+            func inUIColor() -> UIColor {
+                return UIColor(hex: self.rawValue)
+            }
         }
         
         enum Background : String {
             case main = "FFFFFF"
             case segment = "EFF2F5"
+            
+            func inUIColor() -> UIColor {
+                return UIColor(hex: self.rawValue)
+            }
         }
         
         enum InfoDeliver : String {
             case positive = "F04452"
             case negative = "3182F6"
+            
+            func inUIColor() -> UIColor {
+                return UIColor(hex: self.rawValue)
+            }
         }
     }
     
