@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  CryptoExchangeViewController.swift
 //  BetOnCrypto
 //
 //  Created by marty.academy on 3/6/25.
@@ -7,13 +7,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class CryptoExchangeViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        print(#function)
     }
-
-
 }
-
