@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MarketData {
+struct MarketData: Codable {
   let market: String
   let tradeDate: String
   let tradeTime: String
