@@ -7,49 +7,40 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class MarketViewController : BaseViewController {
     
-    let aView = UIView()
-    let bView = UIView()
-    let cView = UIView()
+    private let viewModel = MarketViewModel()
+    private let disposeBag = DisposeBag()
+    
+    private let mainView = MarketView()
+    
+    override func loadView() {
+        self.view = mainView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function, String(describing: self))
+        bind()
+        
+        mainView.collectionView.register(MarketCollectionViewCell.self, forCellWithReuseIdentifier: MarketCollectionViewCell.id)
     }
     
-    override func configureViewHierarchy() {
-        [aView, bView, cView].forEach {
-            view.addSubview($0)
-        }
-    }
-    
-    override func configureViewConstraints() {
-        aView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(8)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(200)
-        }
+    func bind() {
+        let input = MarketViewModel.Input(
+            currentPriceSortTab: mainView.header.currentPriceSortingButton.rx.tap,
+            dayToDaySortTab: mainView.header.currentPriceSortingButton.rx.tap,
+            totalAmountSortTab: mainView.header.totalAmountSortingButton.rx.tap
+        )
         
-        bView.snp.makeConstraints{
-            $0.top.equalTo(aView.snp.bottom).offset(8)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(200)
-        }
+        let output = viewModel.transform(input)
         
-        cView.snp.makeConstraints{
-            $0.top.equalTo(bView.snp.bottom).offset(8)
-            $0.horizontalEdges.equalTo(view.safeAreaLayoutGuide)
-            $0.height.equalTo(200)
-        }
-    }
-    
-    override func configureViewDetails() {
-        view.backgroundColor = .white
-        
-        aView.backgroundColor = DesignSystem.Color.Tint.main.inUIColor()
-        bView.backgroundColor = DesignSystem.Color.Tint.submain.inUIColor()
-        cView.backgroundColor = DesignSystem.Color.Background.segment.inUIColor()
+        output.marketDataSeq.drive(mainView.collectionView.rx.items(cellIdentifier: MarketCollectionViewCell.id, cellType: MarketCollectionViewCell.self)) { row, element, cell in
+            
+            cell.configureData(coin: element.market, price: element.tradePrice, percentage: element.changeRate, absDiff: element.changePrice, amount: element.accTradePrice24h, change: element.change)
+            
+        }.disposed(by: disposeBag)
     }
 }
