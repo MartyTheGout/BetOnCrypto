@@ -30,7 +30,7 @@ class BaseView: UIView, ViewEssential3 {
      TODO: Be sure to comment-out, when the app is not under developing / testing
      */
     deinit {
-        print(#function, "de-allocated from memory")
+        print(String(describing: self),"View: de-allocated from memory")
     }
     
     func configureViewHierarchy() {}
@@ -45,7 +45,7 @@ class BaseViewController: UIViewController, ViewEssential3 {
      TODO: Be sure to comment-out, when the app is not under developing / testing
      */
     deinit {
-        print(#function, "de-allocated from memory")
+        print(String(describing: self),"ViewController: de-allocated from memory")
     }
     
     override func viewDidLoad() {
