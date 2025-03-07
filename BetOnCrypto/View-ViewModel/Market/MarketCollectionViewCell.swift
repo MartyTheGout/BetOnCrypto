@@ -1,0 +1,130 @@
+//
+//  MarketCollectionViewCell.swift
+//  BetOnCrypto
+//
+//  Created by marty.academy on 3/7/25.
+//
+
+import UIKit
+import SnapKit
+
+class MarketCollectionViewCell: UICollectionViewCell {
+    
+    static var id : String {
+        String(describing: self)
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureViewHierarchy()
+        configureViewConstraints()
+        configureViewDetails()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    let listRegularFormat = CollectionListRegularForm()
+    
+    let coinLabel = {
+       let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 12)
+        return label
+    }()
+    
+    let priceLabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
+        return label
+    }()
+    
+    let comparisonView = UIView()
+    
+    let percentageComparison = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
+        return label
+    }()
+    
+    let absoluteComparison = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 9)
+        return label
+    }()
+    
+    let amountLabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
+        return label
+    }()
+    
+    private func configureViewHierarchy() {
+        contentView.addSubview(listRegularFormat)
+        
+        [coinLabel, priceLabel, comparisonView, amountLabel].forEach {
+            listRegularFormat.addArrangedSubview($0)
+        }
+        
+        [percentageComparison, absoluteComparison].forEach {
+            comparisonView.addSubview($0)
+        }
+    }
+    
+    private func configureViewConstraints() {
+        
+        listRegularFormat.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        
+        coinLabel.snp.makeConstraints {
+            $0.width.equalTo(100)
+        }
+        
+        priceLabel.snp.makeConstraints {
+            $0.width.equalTo(100)
+        }
+        
+        comparisonView.snp.makeConstraints {
+            $0.width.equalTo(100)
+            $0.bottom.equalTo(listRegularFormat)
+        }
+        
+        percentageComparison.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(5)
+            $0.trailing.equalToSuperview()
+        }
+        
+        absoluteComparison.snp.makeConstraints {
+            $0.top.equalTo(percentageComparison.snp.bottom).offset(5)
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalTo(comparisonView).offset(-5)
+        }
+        
+        amountLabel.snp.makeConstraints {
+            $0.width.equalTo(100)
+        }
+    }
+    
+    private func configureViewDetails() {
+        contentView.backgroundColor = DesignSystem.Color.Background.main.inUIColor()
+    }
+    
+    func configureData(coin: String, price: Double, percentage: Double, absDiff : Double, amount: Double, change: String ) {
+        coinLabel.text = coin
+        priceLabel.text = "\(price)"
+        percentageComparison.text = "\(percentage)"
+        absoluteComparison.text = "\(absDiff)"
+        amountLabel.text = "\(amount)"
+        
+        print(change)
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+}
