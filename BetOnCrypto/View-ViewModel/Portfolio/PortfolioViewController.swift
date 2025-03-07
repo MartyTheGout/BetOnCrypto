@@ -1,19 +1,20 @@
 //
-//  CryptoExchangeViewController.swift
+//  PortfolioViewController.swift
 //  BetOnCrypto
 //
-//  Created by marty.academy on 3/6/25.
+//  Created by marty.academy on 3/7/25.
 //
 
 import UIKit
 
-class CryptoExchangeViewController : BaseViewController {
+final class PortfolioViewController : BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function)
+        print(#function, String(describing: self))
     }
     
     override func configureViewDetails() {
         view.backgroundColor = .white
     }
 }
+
