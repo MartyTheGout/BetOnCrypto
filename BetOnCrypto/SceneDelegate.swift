@@ -17,20 +17,27 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let window = UIWindow(windowScene: windowScene)
+        window = UIWindow(windowScene: windowScene)
         
         networkMonitor.startMonitoring { [weak self] status in
             switch status {
             case .satisfied:
-                self?.removeNoInternetViewOnWindow(on: windowScene)
+                if let _ = self?.errorWindow {
+                    self?.removeNoInternetViewOnWindow()
+                }
+        
             case .unsatisfied:
+                if let _ = self?.errorWindow {
+                    return
+                }
+                
                 self?.loadNoInternetViewOnWindow(on: windowScene)
             default: break
             }
         }
         
-        window.rootViewController = CryptoExchangeViewController()
-        window.makeKeyAndVisible()
+        window?.rootViewController = CryptoExchangeViewController()
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -73,7 +80,7 @@ extension SceneDelegate {
         self.errorWindow = window
     }
     
-    private func removeNoInternetViewOnWindow(on windowScene: UIWindowScene) {
+    private func removeNoInternetViewOnWindow() {
         errorWindow?.resignKey()
         errorWindow?.isHidden = true
         errorWindow = nil
