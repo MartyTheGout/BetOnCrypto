@@ -43,7 +43,7 @@ enum DesignSystem {
             case coinAndNft = "chart.bar.fill"
             case exchange = "chart.line.uptrend.xyaxis"
             
-            func getImage() -> UIImage {
+            func toUIImage() -> UIImage {
                 return UIImage(systemName: self.rawValue)!
             }
         }
@@ -55,7 +55,7 @@ enum DesignSystem {
             case ascendent = "arrowtriangle.up"
             case descendent = "arrowtriangle.down"
             
-            func getImage() -> UIImage {
+            func toUIImage() -> UIImage {
                 return UIImage(systemName: self.rawValue)!
             }
             
@@ -65,7 +65,7 @@ enum DesignSystem {
                     return UIImage(systemName: "\(self.rawValue).fill")!
                     
                 case .search, .detail:
-                    return getImage()
+                    return toUIImage()
                 }
             }
         }
