@@ -17,4 +17,8 @@ final class MarketDataRepository {
             }
         }
     }
+    
+    func getTickerMock(dataFeeder: @escaping (_ with: [MarketData]) -> Void) {
+        dataFeeder(mockMarketData)
+    }
 }
