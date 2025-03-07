@@ -23,8 +23,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         networkMonitor.startMonitoring { [weak self] status in
-            print("Monitoring is working")
-            print(status)
             switch status {
             case .satisfied:
                 if let _ = self?.errorWindow {
@@ -33,7 +31,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
             case .unsatisfied:
                 if let _ = self?.errorWindow {
-                    print("nwErrorStream emitting false")
                     self?.nwErrorStream?.onNext(false)
                     return
                 }
