@@ -6,13 +6,16 @@
 //
 
 import UIKit
+import RxSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    var errorWindow : UIWindow?
     
-    let networkMonitor = NetworkMonitor()
+    private var errorWindow : UIWindow?
+    private var nwErrorStream : BehaviorSubject<Bool>?
+    
+    private let networkMonitor = NetworkMonitor()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
@@ -20,6 +23,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         
         networkMonitor.startMonitoring { [weak self] status in
+            print("Monitoring is working")
+            print(status)
             switch status {
             case .satisfied:
                 if let _ = self?.errorWindow {
@@ -28,9 +33,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
             case .unsatisfied:
                 if let _ = self?.errorWindow {
+                    print("nwErrorStream emitting false")
+                    self?.nwErrorStream?.onNext(false)
                     return
                 }
                 
+                self?.nwErrorStream = BehaviorSubject(value: false)
                 self?.loadNoInternetViewOnWindow(on: windowScene)
             default: break
             }
@@ -67,20 +75,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
 
 extension SceneDelegate {
     private func loadNoInternetViewOnWindow(on windowScene: UIWindowScene) {
+        guard let nwErrorStream else {
+            print("[SceneDelegate] NetworkErroStream not yet created")
+            return
+        }
+        
         let window = UIWindow(windowScene: windowScene)
         window.windowLevel = .statusBar
         window.makeKeyAndVisible()
-        window.rootViewController = NoInternetViewController()
+        window.rootViewController = NoInternetViewController(errorStream: nwErrorStream)
         self.errorWindow = window
     }
     
     private func removeNoInternetViewOnWindow() {
+        nwErrorStream = nil
+        
         errorWindow?.resignKey()
         errorWindow?.isHidden = true
         errorWindow = nil
