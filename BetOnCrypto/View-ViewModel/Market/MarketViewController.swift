@@ -39,7 +39,7 @@ final class MarketViewController : BaseViewController {
         
         output.marketDataSeq.drive(mainView.collectionView.rx.items(cellIdentifier: MarketCollectionViewCell.id, cellType: MarketCollectionViewCell.self)) { row, element, cell in
             
-            cell.configureData(coin: element.market, price: element.tradePrice, percentage: element.changeRate, absDiff: element.changePrice, amount: element.accTradePrice24h, change: element.change)
+            cell.configureData(basedOn: element)
             
         }.disposed(by: disposeBag)
     }

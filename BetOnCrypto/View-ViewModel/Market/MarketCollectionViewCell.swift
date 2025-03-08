@@ -115,21 +115,14 @@ class MarketCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = DesignSystem.Color.Background.main.inUIColor()
     }
     
-    func configureData(coin: String, price: Double, percentage: Double, absDiff : Double, amount: Double, change: String ) {
-        coinLabel.text = coin
-        priceLabel.text = "\(price)"
-        percentageComparison.text = "\(percentage)"
-        absoluteComparison.text = "\(absDiff)"
-        amountLabel.text = "\(amount)"
-        
-        print(change)
+    func configureData(basedOn market : MarketPresentable) {
+        coinLabel.text = market.coinName
+        priceLabel.text = market.price
+        percentageComparison.text = market.percentage
+        absoluteComparison.text = market.absoluteDiff
+        amountLabel.text = market.totalAmountPerDay
+        print(market.changeInfo)
     }
-    
-    
-    
-    
-    
-    
     
     
 }

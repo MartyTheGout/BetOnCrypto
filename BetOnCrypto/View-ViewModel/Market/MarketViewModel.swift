@@ -44,7 +44,7 @@ class MarketViewModel {
     }
     
     struct Output {
-        let marketDataSeq : Driver<[MarketData]>
+        let marketDataSeq : Driver<[MarketPresentable]>
         let sortingOptionSeq: Driver<SortingCriteria>
     }
     
@@ -54,7 +54,7 @@ class MarketViewModel {
         
         self.fetchDataRequest = input.fetchDataRequest
         
-        let marketDataRelay: BehaviorRelay<[MarketData]> = BehaviorRelay(value: [])
+        let marketDataRelay: BehaviorRelay<[MarketPresentable]> = BehaviorRelay(value: [])
         let sortingRelay = BehaviorRelay(value: SortingCriteria.totalAmount(option: .none))
         
         input.fetchDataRequest.bind(with: self) { owner, _ in
