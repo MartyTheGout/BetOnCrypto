@@ -59,6 +59,14 @@ class SortingButton : UIButton {
         label.text = title
         configureViewHierarchy()
         configureViewConstraints()
+        
+        //isUserInteractionEnabled = false is required no to have subView's intercept the tap event
+        containerStack.isUserInteractionEnabled = false
+        imageContainer.isUserInteractionEnabled = false
+        imageStack.isUserInteractionEnabled = false
+        label.isUserInteractionEnabled = false
+        upsideImage.isUserInteractionEnabled = false
+        downsideImage.isUserInteractionEnabled = false
     }
     
     required init?(coder: NSCoder) {
@@ -91,7 +99,7 @@ class SortingButton : UIButton {
         
         upsideImage.snp.makeConstraints {
             $0.width.equalTo(5)
-            $0.height.equalTo(7)
+            $0.height.equalTo(7) // TODO: Fix
         }
         
         downsideImage.snp.makeConstraints {
