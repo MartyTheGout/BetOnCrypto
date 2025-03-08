@@ -14,8 +14,11 @@ class CustomSearchField : BaseView {
     let textField = {
         let textField = UITextField()
         
-        textField.attributedPlaceholder = NSAttributedString(string: "검색어를 입력해주세요.", attributes: [
-            .foregroundColor : DesignSystem.Color.Tint.submain.inUIColor()
+        textField.attributedPlaceholder = NSAttributedString(
+            string: "검색어를 입력해주세요.",
+            attributes: [
+            .foregroundColor : DesignSystem.Color.Tint.submain.inUIColor(),
+            .font: UIFont.systemFont(ofSize: 15)
         ])
         return textField
     }()
@@ -23,7 +26,7 @@ class CustomSearchField : BaseView {
     let searchImage = {
         let imageView = UIImageView()
         imageView.image = DesignSystem.Icon.Input.search.toUIImage()
-        imageView.contentMode = .scaleToFill
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -47,10 +50,10 @@ class CustomSearchField : BaseView {
         }
         
         textField.snp.makeConstraints {
-            $0.leading.equalTo(searchImage.snp.trailing).offset(16)
-            $0.top.equalTo(containerView).offset(16)
+            $0.leading.equalTo(searchImage.snp.trailing).offset(8)
+            $0.top.equalTo(containerView).offset(12)
             $0.trailing.equalTo(containerView).offset(-16)
-            $0.bottom.equalTo(containerView).offset(-16)
+            $0.bottom.equalTo(containerView).offset(-12)
         }
     }
     
