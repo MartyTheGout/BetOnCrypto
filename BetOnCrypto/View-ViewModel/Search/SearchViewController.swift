@@ -6,10 +6,17 @@
 //
 
 import UIKit
+import SnapKit
+import RxSwift
+import RxCocoa
 
 final class SearchViewController : BaseViewController {
     
+    let viewModel = SearchViewModel()
+    
     let mainView = SearchView()
+    
+    let disposeBag = DisposeBag()
     
     override func loadView() {
         self.view = mainView
@@ -18,6 +25,9 @@ final class SearchViewController : BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationTitleView()
+        
+        mainView.coinCollectionView.register(CoinCollectionViewCell.self, forCellWithReuseIdentifier: CoinCollectionViewCell.id)
+        bind()
     }
     
     private func configureNavigationTitleView() {
@@ -43,9 +53,19 @@ final class SearchViewController : BaseViewController {
             $0.bottom.equalToSuperview().offset(-1)
         }
     }
-
     
     override func configureViewDetails() {
         view.backgroundColor = .white
+    }
+    
+    func bind() {
+        let input = SearchViewModel.Input()
+        let output = viewModel.transform(input)
+        
+        output.coinDataSeq.drive(mainView.coinCollectionView.rx.items(cellIdentifier: CoinCollectionViewCell.id, cellType: CoinCollectionViewCell.self)) { row, element, cell in
+            dump(element)
+            cell.applyData(with: element, number: row + 1)
+            
+        }.disposed(by: disposeBag)
     }
 }
