@@ -8,6 +8,13 @@
 import UIKit
 
 final class SearchViewController : BaseViewController {
+    
+    let mainView = SearchView()
+    
+    override func loadView() {
+        self.view = mainView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configureNavigationTitleView()
