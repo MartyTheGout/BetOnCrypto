@@ -33,6 +33,16 @@ final class MarketViewController : BaseViewController {
         bind()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //TODO: make 5sec fetch work, switch on
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        //TODO: make 5sec fetch work, switch off
+    }
+    
     private func configureNavigationTitleView() {
         let title = UILabel()
         title.text = "거래소"
