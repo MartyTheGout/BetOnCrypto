@@ -33,7 +33,7 @@ final class MarketView: BaseView {
     }
     
     override func configureViewDetails() {
-        collectionView.backgroundColor = .systemIndigo
+        collectionView.backgroundColor = .white
     }
 }
 
