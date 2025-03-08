@@ -14,11 +14,11 @@ enum SortingCriteria {
     case dayToDay(option: SortingSubOption)
     case totalAmount(option: SortingSubOption)
     
-    func getSubOption() -> Int {
+    func changeSubOption() -> SortingCriteria {
         switch self {
-        case .currentPrice(let option): return option.rawValue
-        case .dayToDay(let option): return option.rawValue
-        case .totalAmount(let option): return option.rawValue
+        case .currentPrice(let option): return .currentPrice(option: option.next())
+        case .dayToDay(let option): return .dayToDay(option: option.next())
+        case .totalAmount(let option): return .totalAmount(option: option.next())
         }
     }
 }
@@ -75,10 +75,41 @@ class MarketViewModel {
         let sortingRelay = BehaviorRelay(value: SortingCriteria.totalAmount(option: .none))
         
         input.fetchDataRequest.bind(with: self) { owner, _ in
+            let currentSortingCriteria = sortingRelay.value
+            
             owner.dataRepository.getTickerMock { data in
-                marketDataRelay.accept(data)
+                let sorted = owner.getSortedMarketData(with: currentSortingCriteria, on: data)
+                marketDataRelay.accept(sorted)
             }
             
+        }.disposed(by: disposeBag)
+        
+        input.currentPriceSortTab.bind(with: self) { owner, _ in
+            owner.sortingHandler(sortingRelay: sortingRelay, marketDataRelay: marketDataRelay, selectedSortingOption: SortingCriteria.currentPrice(option: .descendent)) { sortingCriteria in
+                if case .currentPrice = sortingCriteria {
+                    return true
+                }
+                return false
+            }
+            
+        }.disposed(by: disposeBag)
+        
+        input.dayToDaySortTab.bind(with: self) { owner, _ in
+            owner.sortingHandler(sortingRelay: sortingRelay, marketDataRelay: marketDataRelay, selectedSortingOption: SortingCriteria.dayToDay(option: .descendent)) { sortingCriteria in
+                if case .dayToDay = sortingCriteria {
+                    return true
+                }
+                return false
+            }
+        }.disposed(by: disposeBag)
+        
+        input.totalAmountSortTab.bind(with: self) { owner, _ in
+            owner.sortingHandler(sortingRelay: sortingRelay, marketDataRelay: marketDataRelay, selectedSortingOption: SortingCriteria.totalAmount(option: .descendent)) { sortingCriteria in
+                if case .totalAmount = sortingCriteria {
+                    return true
+                }
+                return false
+            }
         }.disposed(by: disposeBag)
         
         return Output(
@@ -86,12 +117,87 @@ class MarketViewModel {
             sortingOptionSeq: sortingRelay.asDriver()
         )
     }
-    
+}
+
+extension MarketViewModel {
     func registerFetchingQueue() {
         designatedQueue.async {
             while (true) {
                 self.fetchDataRequest?.accept(())
                 sleep(5)
+            }
+        }
+    }
+    
+    func sortingHandler(
+        sortingRelay: BehaviorRelay<SortingCriteria>,
+        marketDataRelay: BehaviorRelay<[MarketPresentable]>,
+        selectedSortingOption : SortingCriteria,
+        isSameSortingOption : (SortingCriteria) -> Bool
+    ) {
+        let currentSortingOption: SortingCriteria = sortingRelay.value
+        let currentMarketData : [MarketPresentable] = marketDataRelay.value
+        
+        var newSortingCriteria: SortingCriteria
+        
+        if isSameSortingOption(currentSortingOption) {
+            newSortingCriteria = currentSortingOption.changeSubOption()
+        } else {
+            newSortingCriteria = selectedSortingOption
+        }
+        
+        sortingRelay.accept(newSortingCriteria)
+        let sortedData = getSortedMarketData(with: newSortingCriteria, on: currentMarketData)
+        marketDataRelay.accept(sortedData)
+        
+    }
+    
+    func getSortedMarketData(with sortingCriteria : SortingCriteria, on marketData: [MarketPresentable]) -> [MarketPresentable] {
+        switch sortingCriteria {
+        case .currentPrice(let option):
+            switch option  {
+            case .none:
+                return marketData.sorted { previous, next in
+                    previous.originalTotalAmount > next.originalTotalAmount
+                }
+            case .ascendent:
+                return marketData.sorted { previous, next in
+                    previous.originalPrice < next.originalPrice
+                }
+            case .descendent:
+                return marketData.sorted { previous, next in
+                    previous.originalPrice > next.originalPrice
+                }
+            }
+        case .dayToDay(let option):
+            switch option  {
+            case .none:
+                return marketData.sorted { previous, next in
+                    previous.originalTotalAmount > next.originalTotalAmount
+                }
+            case .ascendent:
+                return marketData.sorted { previous, next in
+                    previous.originalPercentage < next.originalPercentage
+                }
+            case .descendent:
+                return marketData.sorted { previous, next in
+                    previous.originalPercentage > next.originalPercentage
+                }
+            }
+        case .totalAmount(let option):
+            switch option  {
+            case .none:
+                return marketData.sorted { previous, next in
+                    previous.originalTotalAmount > next.originalTotalAmount
+                }
+            case .ascendent:
+                return marketData.sorted { previous, next in
+                    previous.originalTotalAmount < next.originalTotalAmount
+                }
+            case .descendent:
+                return marketData.sorted { previous, next in
+                    previous.originalTotalAmount > next.originalTotalAmount
+                }
             }
         }
     }
