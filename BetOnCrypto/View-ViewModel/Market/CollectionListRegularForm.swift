@@ -15,7 +15,7 @@ final class CollectionListRegularForm : UIStackView {
         super.init(frame: frame)
         axis = .horizontal
         distribution = .equalSpacing
-        spacing = 5
+        spacing = 0
     }
     
     required init(coder: NSCoder) {

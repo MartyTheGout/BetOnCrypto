@@ -23,7 +23,7 @@ final class MarketView: BaseView {
         header.snp.makeConstraints {
             $0.top.equalTo(safeAreaLayoutGuide)
             $0.horizontalEdges.equalTo(safeAreaLayoutGuide)
-            $0.height.equalTo(50)
+            $0.height.equalTo(30)
         }
         
         collectionView.snp.makeConstraints {

@@ -32,20 +32,24 @@ class SortingButton : UIButton {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.alignment = .center
-        stack.distribution = .equalSpacing
-        stack.spacing = 5
+        stack.distribution = .fillProportionally
+        stack.spacing = 0
         return stack
     }()
     
     lazy var upsideImage = {
         let imageView = UIImageView()
-        imageView.image = DesignSystem.Icon.Input.ascendent.toUIImage().withTintColor(unselectedColor)
+        imageView.image = DesignSystem.Icon.Input.ascendent.fill()
+        imageView.contentMode = .scaleAspectFill
+        imageView.tintColor = unselectedColor
         return imageView
     }()
     
     lazy var downsideImage = {
         let imageView = UIImageView()
-        imageView.image = DesignSystem.Icon.Input.descendent.toUIImage().withTintColor(unselectedColor)
+        imageView.image = DesignSystem.Icon.Input.descendent.fill() // TODO: why withTintColor 는 작동하지 않는가?
+        imageView.contentMode = .scaleAspectFill
+        imageView.tintColor = unselectedColor
         return imageView
     }()
     
@@ -65,10 +69,7 @@ class SortingButton : UIButton {
         imageStack.addArrangedSubview(upsideImage)
         imageStack.addArrangedSubview(downsideImage)
         
-        
         imageContainer.addSubview(imageStack)
-//        imageContainer.addSubview(upsideImage)
-//        imageContainer.addSubview(downsideImage)
         
         containerStack.addArrangedSubview(label)
         containerStack.addArrangedSubview(imageContainer)
@@ -85,19 +86,22 @@ class SortingButton : UIButton {
         }
         
         imageContainer.snp.makeConstraints {
-            $0.width.equalTo(15)
+            $0.width.equalTo(5)
         }
         
         upsideImage.snp.makeConstraints {
-            $0.size.equalTo(10)
+            $0.width.equalTo(5)
+            $0.height.equalTo(7)
         }
         
         downsideImage.snp.makeConstraints {
-            $0.size.equalTo(10)
+            $0.width.equalTo(5)
+            $0.height.equalTo(7)
         }
         
         imageStack.snp.makeConstraints {
             $0.center.equalToSuperview()
+            $0.height.equalTo(15)
         }
     }
     
@@ -113,7 +117,7 @@ class SortingButton : UIButton {
     }
     
     func changeTintColorOnImage(upside: UIColor, downside: UIColor) {
-        upsideImage.image?.withTintColor(upside)
-        downsideImage.image?.withTintColor(downside)
+        upsideImage.tintColor = upside
+        downsideImage.tintColor = downside
     }
 }
