@@ -36,7 +36,8 @@ final class MarketHeader: BaseView {
     override func configureViewConstraints() {
         
         containerView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.verticalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(16)
         }
         
         coinColumnLabel.snp.makeConstraints {
@@ -44,11 +45,11 @@ final class MarketHeader: BaseView {
         }
         
         currentPriceSortingButton.snp.makeConstraints {
-            $0.width.equalTo(100)
+            $0.width.equalTo(80)
         }
         
         dayToDaySortingButton.snp.makeConstraints {
-            $0.width.equalTo(100)
+            $0.width.equalTo(60)
         }
         
         totalAmountSortingButton.snp.makeConstraints {

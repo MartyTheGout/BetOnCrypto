@@ -36,6 +36,7 @@ class MarketCollectionViewCell: UICollectionViewCell {
     let priceLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
+        label.textAlignment = .right
         return label
     }()
     
@@ -44,18 +45,21 @@ class MarketCollectionViewCell: UICollectionViewCell {
     let percentageComparison = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
+        label.textAlignment = .right
         return label
     }()
     
     let absoluteComparison = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 9)
+        label.textAlignment = .right
         return label
     }()
     
     let amountLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
+        label.textAlignment = .right
         return label
     }()
     
@@ -74,7 +78,8 @@ class MarketCollectionViewCell: UICollectionViewCell {
     private func configureViewConstraints() {
         
         listRegularFormat.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.verticalEdges.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview().inset(16)
         }
         
         coinLabel.snp.makeConstraints {
@@ -82,11 +87,11 @@ class MarketCollectionViewCell: UICollectionViewCell {
         }
         
         priceLabel.snp.makeConstraints {
-            $0.width.equalTo(100)
+            $0.width.equalTo(80)
         }
         
         comparisonView.snp.makeConstraints {
-            $0.width.equalTo(100)
+            $0.width.equalTo(60)
             $0.bottom.equalTo(listRegularFormat)
         }
         
