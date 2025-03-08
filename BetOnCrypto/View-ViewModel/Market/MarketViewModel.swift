@@ -59,12 +59,12 @@ struct MarketPresentable {
     )
 }
 
-class MarketViewModel {
-    let designatedQueue = DispatchQueue(label: "MarketDataFetching_Queue")
+final class MarketViewModel {
+    private let designatedQueue = DispatchQueue(label: "MarketDataFetching_Queue")
     
-    let dataRepository = MarketDataRepository()
+    private let dataRepository = MarketDataRepository()
     
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     
     struct Input {
         let fetchDataRequest : BehaviorRelay<Void> = BehaviorRelay(value: ()) //For refetching data
@@ -78,7 +78,7 @@ class MarketViewModel {
         let sortingOptionSeq: Driver<SortingCriteria>
     }
     
-    var fetchDataRequest: BehaviorRelay<Void>?
+    private var fetchDataRequest: BehaviorRelay<Void>?
     
     func transform(_ input : Input) -> Output {
         
@@ -141,7 +141,7 @@ class MarketViewModel {
 }
 
 extension MarketViewModel {
-    func registerFetchingQueue() {
+    private func registerFetchingQueue() {
         designatedQueue.async {
             while (true) {
                 self.fetchDataRequest?.accept(())
@@ -150,7 +150,7 @@ extension MarketViewModel {
         }
     }
     
-    func sortingHandler(
+    private func sortingHandler(
         sortingRelay: BehaviorRelay<SortingCriteria>,
         marketDataRelay: BehaviorRelay<[MarketPresentable]>,
         selectedSortingOption : SortingCriteria,
@@ -173,7 +173,7 @@ extension MarketViewModel {
         
     }
     
-    func getSortedMarketData(with sortingCriteria : SortingCriteria, on marketData: [MarketPresentable]) -> [MarketPresentable] {
+    private func getSortedMarketData(with sortingCriteria : SortingCriteria, on marketData: [MarketPresentable]) -> [MarketPresentable] {
         switch sortingCriteria {
         case .currentPrice(let option):
             switch option  {

@@ -33,12 +33,13 @@ final class MarketViewController : BaseViewController {
         bind()
     }
     
-    func configureNavigationTitleView() {
+    private func configureNavigationTitleView() {
         let title = UILabel()
         title.text = "거래소"
         title.font = .boldSystemFont(ofSize: 17)
 
         let spacer = UIView()
+        let divider = Divider()
         
         let stack = UIStackView(arrangedSubviews: [title, spacer])
         stack.axis = .horizontal
@@ -48,9 +49,15 @@ final class MarketViewController : BaseViewController {
         }
         
         navigationItem.titleView = stack
+        
+        navigationController?.navigationBar.addSubview(divider)
+        divider.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-1)
+        }
     }
     
-    func bind() {
+    private func bind() {
         let input = MarketViewModel.Input(
             currentPriceSortTab: mainView.header.currentPriceSortingButton.rx.tap,
             dayToDaySortTab: mainView.header.dayToDaySortingButton.rx.tap,
