@@ -44,6 +44,19 @@ struct MarketPresentable {
     var presentableDiff : String
     var originalTotalAmount: Double
     var presentableTotalAmount: String
+    
+    static var mock = MarketPresentable(
+        originalCoin : "KRW-BTC",
+        presentableCoin: "BTC/KRW",
+        originalPrice : 1212121212.0,
+        presentablePrice: "111,111,111",
+        originalPercentage: 0.5,
+        presentablePercentage: "50%",
+        originalDiff : 50.0,
+        presentableDiff : "50.0",
+        originalTotalAmount: 1212121212,
+        presentableTotalAmount: "1212백만"
+    )
 }
 
 class MarketViewModel {
@@ -74,10 +87,18 @@ class MarketViewModel {
         let marketDataRelay: BehaviorRelay<[MarketPresentable]> = BehaviorRelay(value: [])
         let sortingRelay = BehaviorRelay(value: SortingCriteria.totalAmount(option: .none))
         
+        registerFetchingQueue()
+        
         input.fetchDataRequest.bind(with: self) { owner, _ in
             let currentSortingCriteria = sortingRelay.value
             
-            owner.dataRepository.getTickerMock { data in
+            //For testing
+//            owner.dataRepository.getTickerMock { data in
+//                let sorted = owner.getSortedMarketData(with: currentSortingCriteria, on: data)
+//                marketDataRelay.accept(sorted)
+//            }
+            
+            owner.dataRepository.getTickerData { data in
                 let sorted = owner.getSortedMarketData(with: currentSortingCriteria, on: data)
                 marketDataRelay.accept(sorted)
             }
