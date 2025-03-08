@@ -38,7 +38,7 @@ struct MarketData: Codable {
 
 let mockMarketData: [MarketData] = [
   MarketData(
-    market: "KRW-BTC",
+    market: "KRW-VIRTUAL",
     tradeDate: "20250306",
     tradeTime: "053346",
     tradeDateKst: "20250306",
@@ -66,7 +66,7 @@ let mockMarketData: [MarketData] = [
     timestamp: 1741239226475
   ),
   MarketData(
-    market: "KRW-ETH",
+    market: "KRW-TOKAMAK",
     tradeDate: "20250306",
     tradeTime: "053345",
     tradeDateKst: "20250306",
