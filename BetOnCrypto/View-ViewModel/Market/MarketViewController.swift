@@ -31,7 +31,7 @@ final class MarketViewController : BaseViewController {
     func bind() {
         let input = MarketViewModel.Input(
             currentPriceSortTab: mainView.header.currentPriceSortingButton.rx.tap,
-            dayToDaySortTab: mainView.header.currentPriceSortingButton.rx.tap,
+            dayToDaySortTab: mainView.header.dayToDaySortingButton.rx.tap,
             totalAmountSortTab: mainView.header.totalAmountSortingButton.rx.tap
         )
         
