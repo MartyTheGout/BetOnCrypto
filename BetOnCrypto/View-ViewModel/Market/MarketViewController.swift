@@ -42,5 +42,9 @@ final class MarketViewController : BaseViewController {
             cell.configureData(basedOn: element)
             
         }.disposed(by: disposeBag)
+        
+        output.sortingOptionSeq.drive(with: self) { owner, value in
+            owner.mainView.header.applyChangedSortingData(with: value)
+        }.disposed(by: disposeBag)
     }
 }

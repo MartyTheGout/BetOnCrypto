@@ -60,4 +60,25 @@ final class MarketHeader: BaseView {
     override func configureViewDetails() {
         backgroundColor = DesignSystem.Color.Background.segment.inUIColor()
     }
+    
+    func applyChangedSortingData(with sortingData: SortingCriteria) {
+        switch sortingData {
+        case .currentPrice(let option):
+            applyChangeToCorrespondingButton(correspondingOne: 0, option: option)
+        case .dayToDay(let option):
+            applyChangeToCorrespondingButton(correspondingOne: 1, option: option)
+        case .totalAmount(let option):
+            applyChangeToCorrespondingButton(correspondingOne: 2, option: option)
+        }
+    }
+    
+    func applyChangeToCorrespondingButton(correspondingOne: Int, option: SortingSubOption) {
+        [currentPriceSortingButton, dayToDaySortingButton, totalAmountSortingButton].enumerated().forEach { index, button in
+            if index == correspondingOne {
+                button.reflectSortingData(option: option)
+            } else {
+                button.reflectSortingData(option: .none)
+            }
+        }
+    }
 }
