@@ -8,13 +8,7 @@
 import Foundation
 import Alamofire
 
-struct MarketPresentable {
-    var coinName: String
-    var price: String
-    var percentage: String
-    var absoluteDiff : String
-    var totalAmountPerDay: String
-}
+
 
 final class MarketDataRepository {
     func getTickerData(dataFeeder : @escaping (_ with: [MarketData]) -> Void) {
@@ -50,11 +44,16 @@ extension MarketDataRepository {
     
     func convertOriginToPresentable(with originalData: MarketData) -> MarketPresentable {
         return MarketPresentable(
-            coinName: covertCoinNameWithSlash(with: originalData.market),
-            price: NumberFormatManager.shared.getDecialWithMax2FD(originalValue: originalData.tradePrice),
-            percentage: NumberFormatManager.shared.getPercentage(originalValue: originalData.signedChangeRate),
-            absoluteDiff: NumberFormatManager.shared.getDecialWithMax2FD(originalValue: originalData.signedChangePrice),
-            totalAmountPerDay: NumberFormatManager.shared.getValueBasedOnMilion(originalValue: originalData.accTradePrice24h)
+            originalCoin : originalData.market,
+            presentableCoin: covertCoinNameWithSlash(with: originalData.market),
+            originalPrice : originalData.tradePrice,
+            presentablePrice: NumberFormatManager.shared.getDecialWithMax2FD(originalValue: originalData.tradePrice),
+            originalPercentage: originalData.signedChangeRate,
+            presentablePercentage: NumberFormatManager.shared.getPercentage(originalValue: originalData.signedChangeRate),
+            originalDiff : originalData.signedChangePrice,
+            presentableDiff : NumberFormatManager.shared.getDecialWithMax2FD(originalValue: originalData.signedChangePrice),
+            originalTotalAmount: originalData.accTradePrice24h,
+            presentableTotalAmount: NumberFormatManager.shared.getValueBasedOnMilion(originalValue: originalData.accTradePrice24h)
         )
     }
 }

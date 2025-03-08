@@ -27,6 +27,23 @@ enum SortingSubOption: Int {
     case none = 0
     case descendent
     case ascendent
+    
+    func next() -> SortingSubOption {
+        return SortingSubOption(rawValue: (self.rawValue + 1) % 3) ?? .none
+    }
+}
+
+struct MarketPresentable {
+    var originalCoin : String
+    var presentableCoin: String
+    var originalPrice : Double
+    var presentablePrice: String
+    var originalPercentage: Double
+    var presentablePercentage: String
+    var originalDiff : Double
+    var presentableDiff : String
+    var originalTotalAmount: Double
+    var presentableTotalAmount: String
 }
 
 class MarketViewModel {

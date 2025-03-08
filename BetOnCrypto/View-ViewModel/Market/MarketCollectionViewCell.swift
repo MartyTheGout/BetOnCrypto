@@ -116,14 +116,14 @@ class MarketCollectionViewCell: UICollectionViewCell {
     }
     
     func configureData(basedOn market : MarketPresentable) {
-        coinLabel.text = market.coinName
-        priceLabel.text = market.price
+        coinLabel.text = market.presentableCoin
+        priceLabel.text = market.presentablePrice
         
-        percentageComparison.text = market.percentage
-        absoluteComparison.text = market.absoluteDiff
-        configureComparisonTextColor(basedOn: market.absoluteDiff)
+        percentageComparison.text = market.presentablePercentage
+        absoluteComparison.text = market.presentableDiff
+        configureComparisonTextColor(basedOn: market.presentableDiff)
         
-        amountLabel.text = market.totalAmountPerDay
+        amountLabel.text = market.presentableTotalAmount
     }
     
     func configureComparisonTextColor(basedOn absDiff : String) {
