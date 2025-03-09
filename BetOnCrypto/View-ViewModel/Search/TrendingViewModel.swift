@@ -9,7 +9,29 @@ import Foundation
 import RxSwift
 import RxCocoa
 
-final class SearchViewModel {
+struct TrendingCoinPresentable {
+  let name: String
+  let symbol: String
+  let thumb: String
+  let data: TrendingCoinDataPresentable
+}
+
+struct TrendingCoinDataPresentable {
+    let krw: String
+}
+
+struct TrendingNFTPresentable {
+  let name: String
+  let thumb: String
+  let floorPrice24hPercentageChange: String
+  let data: TrendingNFTDataPresentable
+}
+
+struct TrendingNFTDataPresentable: Codable {
+  let floorPrice: String
+}
+
+final class TrendingViewModel {
     
     private let designatedQueue = DispatchQueue(label: "TrendingDataFetching_Qeue")
     
@@ -22,14 +44,14 @@ final class SearchViewModel {
     }
     
     struct Output {
-        let coinDataSeq: Driver<[SearchCoin]>
-        let nftDataSeq : Driver<[SearchNFT]>
+        let coinDataSeq: Driver<[TrendingCoinPresentable]>
+        let nftDataSeq : Driver<[TrendingNFTPresentable]>
     }
     
     private var fetchDataRequest: BehaviorRelay<Void>?
     
-    private let coinRelay: BehaviorRelay<[SearchCoin]> = BehaviorRelay(value: [])
-    private let nftRelay: BehaviorRelay<[SearchNFT]> = BehaviorRelay(value: [])
+    private let coinRelay: BehaviorRelay<[TrendingCoinPresentable]> = BehaviorRelay(value: [])
+    private let nftRelay: BehaviorRelay<[TrendingNFTPresentable]> = BehaviorRelay(value: [])
     
     func transform(_ input: Input) -> Output {
         
@@ -38,10 +60,9 @@ final class SearchViewModel {
         registerFetchingQueue()
         
         input.fetchDataRequest.bind(with: self) { owner, _ in
-            owner.dataRepository.getTrendingMock { result in
-                print(result)
-                owner.coinRelay.accept(result.coins)
-                owner.nftRelay.accept(result.nfts)
+            owner.dataRepository.getTrendingMock { mockCoin, mockNft in
+                owner.coinRelay.accept(mockCoin)
+                owner.nftRelay.accept(mockNft)
             }
 
         }.disposed(by: disposeBag)
@@ -53,7 +74,7 @@ final class SearchViewModel {
     }
 }
 
-extension SearchViewModel {
+extension TrendingViewModel {
     private func registerFetchingQueue() {
         designatedQueue.async {
             while(true) {

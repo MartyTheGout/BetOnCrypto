@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchView: BaseView {
+class TrendingView: BaseView {
     
     let searchField = CustomSearchField()
     
@@ -85,7 +85,7 @@ class SearchView: BaseView {
     }
 }
 
-extension SearchView {
+extension TrendingView {
     
     func create2X7CompositionalLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, _ in

@@ -10,11 +10,11 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-final class SearchViewController : BaseViewController {
+final class TrendingViewController : BaseViewController {
     
-    let viewModel = SearchViewModel()
+    let viewModel = TrendingViewModel()
     
-    let mainView = SearchView()
+    let mainView = TrendingView()
     
     let disposeBag = DisposeBag()
     
@@ -59,7 +59,7 @@ final class SearchViewController : BaseViewController {
     }
     
     func bind() {
-        let input = SearchViewModel.Input()
+        let input = TrendingViewModel.Input()
         let output = viewModel.transform(input)
         
         output.coinDataSeq.drive(mainView.coinCollectionView.rx.items(cellIdentifier: CoinCollectionViewCell.id, cellType: CoinCollectionViewCell.self)) { row, element, cell in
