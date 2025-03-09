@@ -25,7 +25,7 @@ final class CoinSearchResultView: BaseView {
     }
     
     override func configureViewDetails() {
-        collectionView.backgroundColor = .systemIndigo
+        collectionView.backgroundColor = DesignSystem.Color.Background.main.inUIColor()
     }
 }
 
