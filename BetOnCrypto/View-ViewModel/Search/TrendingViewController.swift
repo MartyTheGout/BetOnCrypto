@@ -27,6 +27,8 @@ final class TrendingViewController : BaseViewController {
         configureNavigationTitleView()
         
         mainView.coinCollectionView.register(CoinCollectionViewCell.self, forCellWithReuseIdentifier: CoinCollectionViewCell.id)
+        mainView.nftCollectionView.register(NFTCollectionViewCell.self, forCellWithReuseIdentifier: NFTCollectionViewCell.id)
+        
         bind()
     }
     
@@ -63,15 +65,11 @@ final class TrendingViewController : BaseViewController {
         let output = viewModel.transform(input)
         
         output.coinDataSeq.drive(mainView.coinCollectionView.rx.items(cellIdentifier: CoinCollectionViewCell.id, cellType: CoinCollectionViewCell.self)) { row, element, cell in
-            dump(element)
-            
             cell.applyData(with: element, number: row + 1)
-            
         }.disposed(by: disposeBag)
         
-        output.nftDataSeq.drive { value in
-            dump("==== arrived from new === ")
-            dump(value)
-        }
+        output.nftDataSeq.drive(mainView.nftCollectionView.rx.items(cellIdentifier: NFTCollectionViewCell.id, cellType: NFTCollectionViewCell.self)) { row, element, cell in
+            cell.applyData(with: element)
+        }.disposed(by: disposeBag)
     }
 }
