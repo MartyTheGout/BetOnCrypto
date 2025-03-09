@@ -70,6 +70,7 @@ final class CoinSearchResultViewCell: UICollectionViewCell {
     let likeButton = {
         let button = UIButton()
         button.setImage(DesignSystem.Icon.Input.star.toUIImage(), for: .normal)
+        button.tintColor = DesignSystem.Color.Tint.main.inUIColor()
         return button
     }()
     
@@ -128,7 +129,7 @@ final class CoinSearchResultViewCell: UICollectionViewCell {
 
 //MARK: - Data related
 extension CoinSearchResultViewCell {
-    func applyData(with data: SearchCoin) {
+    func applyData(with data: SearchCoinPresentable) {
         imageView.kf.setImage(with: URL(string: data.thumb)!)
         
         symbolLabel.text = data.symbol
@@ -137,5 +138,13 @@ extension CoinSearchResultViewCell {
         if let rankInfo = data.marketCapRank {
             rankingLabel.text = "#\(rankInfo)"
         }
+        
+        applyLikedDataToButton(with: data.liked)
+    }
+    
+    func applyLikedDataToButton(with liked: Bool) {
+        let image = liked ? DesignSystem.Icon.Input.star.toUIImage() : DesignSystem.Icon.Input.star.fill()
+        
+        likeButton.setImage(image, for: .normal)
     }
 }
