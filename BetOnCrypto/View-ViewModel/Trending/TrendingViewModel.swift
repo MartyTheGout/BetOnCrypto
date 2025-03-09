@@ -82,7 +82,6 @@ extension TrendingViewModel {
     private func registerFetchingQueue() {
         designatedQueue.async {
             while(true) {
-                print("registerFetch- from search")
                 self.fetchDataRequest?.accept(())
                 sleep(600)
             }
