@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		4016C4322D79B1670080ACAF /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 4016C4312D79B1670080ACAF /* .gitignore */; };
 		4016C4522D79B5690080ACAF /* Toast in Frameworks */ = {isa = PBXBuildFile; productRef = 4016C4512D79B5690080ACAF /* Toast */; };
-		4016C4582D79B5960080ACAF /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = 4016C4572D79B5960080ACAF /* Differentiator */; };
-		4016C45A2D79B5960080ACAF /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 4016C4592D79B5960080ACAF /* RxDataSources */; };
 		4016C45D2D79B5B30080ACAF /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 4016C45C2D79B5B30080ACAF /* RxCocoa */; };
 		4016C45F2D79B5B30080ACAF /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4016C45E2D79B5B30080ACAF /* RxSwift */; };
 		4016C4622D79B5C40080ACAF /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4016C4612D79B5C40080ACAF /* Alamofire */; };
@@ -67,12 +65,10 @@
 			files = (
 				4016C45F2D79B5B30080ACAF /* RxSwift in Frameworks */,
 				4016C4622D79B5C40080ACAF /* Alamofire in Frameworks */,
-				4016C45A2D79B5960080ACAF /* RxDataSources in Frameworks */,
 				4016C6F92D7AB5160080ACAF /* RealmSwift in Frameworks */,
 				4016C4652D79B5CF0080ACAF /* Kingfisher in Frameworks */,
 				4016C45D2D79B5B30080ACAF /* RxCocoa in Frameworks */,
 				4016C4682D79B5DB0080ACAF /* SnapKit in Frameworks */,
-				4016C4582D79B5960080ACAF /* Differentiator in Frameworks */,
 				4016C4522D79B5690080ACAF /* Toast in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -119,8 +115,6 @@
 			name = BetOnCrypto;
 			packageProductDependencies = (
 				4016C4512D79B5690080ACAF /* Toast */,
-				4016C4572D79B5960080ACAF /* Differentiator */,
-				4016C4592D79B5960080ACAF /* RxDataSources */,
 				4016C45C2D79B5B30080ACAF /* RxCocoa */,
 				4016C45E2D79B5B30080ACAF /* RxSwift */,
 				4016C4612D79B5C40080ACAF /* Alamofire */,
@@ -158,7 +152,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				4016C4502D79B5690080ACAF /* XCRemoteSwiftPackageReference "Toast-Swift" */,
-				4016C4562D79B5960080ACAF /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				4016C45B2D79B5B30080ACAF /* XCRemoteSwiftPackageReference "RxSwift" */,
 				4016C4602D79B5C40080ACAF /* XCRemoteSwiftPackageReference "Alamofire" */,
 				4016C4632D79B5CF0080ACAF /* XCRemoteSwiftPackageReference "Kingfisher" */,
@@ -420,14 +413,6 @@
 				minimumVersion = 5.1.1;
 			};
 		};
-		4016C4562D79B5960080ACAF /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.2;
-			};
-		};
 		4016C45B2D79B5B30080ACAF /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -475,16 +460,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4016C4502D79B5690080ACAF /* XCRemoteSwiftPackageReference "Toast-Swift" */;
 			productName = Toast;
-		};
-		4016C4572D79B5960080ACAF /* Differentiator */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4016C4562D79B5960080ACAF /* XCRemoteSwiftPackageReference "RxDataSources" */;
-			productName = Differentiator;
-		};
-		4016C4592D79B5960080ACAF /* RxDataSources */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4016C4562D79B5960080ACAF /* XCRemoteSwiftPackageReference "RxDataSources" */;
-			productName = RxDataSources;
 		};
 		4016C45C2D79B5B30080ACAF /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;
