@@ -17,6 +17,8 @@ class SearchViewController: BaseViewController {
     
     let disposeBag = DisposeBag()
     
+    var childVC: UIViewController?
+    
     init(keyword: String) {
         self.keyword = keyword
         super.init(nibName: nil, bundle: nil)
@@ -85,14 +87,37 @@ class SearchViewController: BaseViewController {
         
         let output = viewModel.transform(input)
         
-        output.coinSearchResultSeq.drive(mainView.coinSearchResultView.collectionView.rx.items(cellIdentifier: CoinSearchResultViewCell.id, cellType: CoinSearchResultViewCell.self)) { row, element, cell in
-            dump(element)
+        output.coinSearchResultSeq.drive() { _ in
+            output.activityIndicatrControlSeq.accept(false)
+        }.disposed(by: disposeBag)
+        
+        output.coinSearchResultSeq.drive(mainView.coinSearchResultView.collectionView.rx.items(cellIdentifier: CoinSearchResultViewCell.id, cellType: CoinSearchResultViewCell.self)) { [weak self] row, element, cell in
             cell.applyData(with: element)
             
+            //TODO: Test Required
+            cell.likeButton.rx.tap.bind {
+                input.likedInputSeq.accept(element.id)
+            }.disposed(by: self?.disposeBag ?? DisposeBag()) // TODO: Test Memory leak
+            
+        }.disposed(by: disposeBag)
+        
+        output.activityIndicatrControlSeq.bind(with: self) { owner, value in
+            // true => show indicator , false => delete indicator
+            if value {
+                print(value, "activityIndicator")
+                owner.createSpinnerView()
+            } else {
+                print(value, "activityIndicator")
+                owner.deleteSpinnerView()
+            }
         }.disposed(by: disposeBag)
         
         mainView.segmentedControl.rx.selectedSegmentIndex.bind(with: self) { owner, value in
             owner.mainView.controlContentView(with: value)
+        }.disposed(by: disposeBag)
+        
+        backBarButtonItem.rx.tap.bind(with: self) { owner, _ in
+            owner.navigateToBackViewController()
         }.disposed(by: disposeBag)
     }
 }
@@ -129,5 +154,35 @@ extension SearchViewController {
             mainView.segmentedControl.selectedSegmentIndex -= 1
             mainView.segmentedControl.sendActions(for: .valueChanged)
         }
+    }
+    
+    private func navigateToBackViewController() {
+        navigationController?.popViewController(animated: true)
+    }
+}
+
+//MARK: - Activity Indicator
+extension SearchViewController {
+    private func createSpinnerView() {
+        let child = SpinnerViewController()
+
+         addChild(child)
+         child.view.frame = view.frame
+         view.addSubview(child.view)
+         child.didMove(toParent: self)
+        
+        self.childVC = child
+    }
+    
+    private func deleteSpinnerView() {
+        guard let childVC else {
+            print("[MarketViewController] There is no childVC here")
+            return
+        }
+        
+        childVC.willMove(toParent: nil)
+        childVC.view.removeFromSuperview()
+        childVC.removeFromParent()
+        print(childVC, "delete")
     }
 }
