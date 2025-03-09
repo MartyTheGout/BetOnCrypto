@@ -60,11 +60,15 @@ final class TrendingViewModel {
         registerFetchingQueue()
         
         input.fetchDataRequest.bind(with: self) { owner, _ in
-            owner.dataRepository.getTrendingMock { mockCoin, mockNft in
-                owner.coinRelay.accept(mockCoin)
-                owner.nftRelay.accept(mockNft)
+//            owner.dataRepository.getTrendingMock { mockCoin, mockNft in
+//                owner.coinRelay.accept(mockCoin.suffix(14))
+//                owner.nftRelay.accept(mockNft.suffix(7))
+//            }
+            
+            owner.dataRepository.getTrendingData { coinData, nftData in
+                owner.coinRelay.accept(coinData.suffix(14))
+                owner.nftRelay.accept(nftData.suffix(7))
             }
-
         }.disposed(by: disposeBag)
         
         return Output(

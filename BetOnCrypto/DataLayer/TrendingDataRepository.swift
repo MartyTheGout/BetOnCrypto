@@ -9,11 +9,15 @@ import Foundation
 import Alamofire
 
 final class TrendingDataRepository {
-    func getTrendingData(dataFeeder : @escaping (_ with: TrendingResponse) -> Void) {
-        NetworkManager.shared.callRequest(ExchangeRouter.ticker) { [weak self] (result: Result<TrendingResponse, AFError>) in
+    func getTrendingData(dataFeeder : @escaping ([TrendingCoinPresentable], [TrendingNFTPresentable]) -> Void) {
+        NetworkManager.shared.callRequest(CoinAndNFTRouter.trending) { [weak self] (result: Result<TrendingResponse, AFError>) in
             switch result {
             case .success(let trendingData) :
-                print(trendingData)
+                let convertedCoin = self?.convertOriginToPresentableCoin(originalData: trendingData.coins)
+                let convertedNFT = self?.convertOriginToPresentableNFT(originalData: trendingData.nfts)
+                
+                guard let convertedCoin, let convertedNFT else { return }
+                dataFeeder(convertedCoin, convertedNFT)
             case .failure(let error): print(error)
             }
         }
