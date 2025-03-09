@@ -16,6 +16,8 @@ final class TrendingViewController : BaseViewController {
     
     private let mainView = TrendingView()
     
+    private var childVC : UIViewController?
+    
     private let disposeBag = DisposeBag()
     
     override func loadView() {
@@ -29,6 +31,7 @@ final class TrendingViewController : BaseViewController {
         mainView.coinCollectionView.register(CoinCollectionViewCell.self, forCellWithReuseIdentifier: CoinCollectionViewCell.id)
         mainView.nftCollectionView.register(NFTCollectionViewCell.self, forCellWithReuseIdentifier: NFTCollectionViewCell.id)
         
+        createSpinnerView()
         bind()
     }
     
@@ -69,6 +72,17 @@ final class TrendingViewController : BaseViewController {
             self?.updateDataFetchingTime()
         }.disposed(by: disposeBag)
         
+        output.coinDataSeq.filter { !$0.isEmpty }.asObservable().take(1)
+//            .do(
+//                onDispose: {
+//                    print("TrendingViewController:coinDataSeq:onceSubscription || disposed completely")
+//                }
+//            )
+            .bind(with: self) { owner, _ in
+                owner.deleteSpinnerView()
+            }
+        .disposed(by: disposeBag)
+        
         output.nftDataSeq.drive(mainView.nftCollectionView.rx.items(cellIdentifier: NFTCollectionViewCell.id, cellType: NFTCollectionViewCell.self)) { row, element, cell in
             cell.applyData(with: element)
         }.disposed(by: disposeBag)
@@ -104,3 +118,28 @@ extension TrendingViewController {
         navigationController?.pushViewController(destinationVC, animated: true)
     }
 }
+
+extension TrendingViewController {
+    private func createSpinnerView() {
+        let child = SpinnerViewController()
+
+         addChild(child)
+         child.view.frame = view.frame
+         view.addSubview(child.view)
+         child.didMove(toParent: self)
+        
+        self.childVC = child
+    }
+    
+    private func deleteSpinnerView() {
+        guard let childVC else {
+            print("[MarketViewController] There is no childVC here")
+            return
+        }
+        
+        childVC.willMove(toParent: nil)
+        childVC.view.removeFromSuperview()
+        childVC.removeFromParent()
+    }
+}
+

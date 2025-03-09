@@ -81,7 +81,7 @@ final class MarketViewController : BaseViewController {
             
         }.disposed(by: disposeBag)
         
-        output.marketDataSeq.filter { !$0.isEmpty}.asObservable().take(1)
+        output.marketDataSeq.filter { !$0.isEmpty }.asObservable().take(1)
 //            .do(onDispose: {
 //                    print("Subscription disposed!")
 //                }) // possible to use 'do' to check whether dispose work has completely done.
