@@ -103,7 +103,7 @@ class CoinCollectionViewCell: UICollectionViewCell {
 
 extension CoinCollectionViewCell {
     
-    func applyData(with data: SearchCoin, number: Int) {
+    func applyData(with data: TrendingCoinPresentable, number: Int) {
         
         numberLabel.text = "\(number)"
         
@@ -112,26 +112,28 @@ extension CoinCollectionViewCell {
         coinSymbolLabel.text = data.symbol
         coinNameLabel.text = data.name
         
-        applyPercentageChange(data: "\(data.data.priceChangePercentage24h.krw)")
-        
+        applyPercentageChange(data: "\(data.data.krw)")
     }
     
     private func applyPercentageChange(data: String) {
+        
+        let color = data.starts(with: "-") ?
+        DesignSystem.Color.InfoDeliver.negative.inUIColor() :
+        DesignSystem.Color.InfoDeliver.positive.inUIColor()
+        
+        let symbol = data.starts(with: "-") ?
+        DesignSystem.Icon.Input.descendent.fill() :
+        DesignSystem.Icon.Input.ascendent.fill()
+        
         let mutableAttributedString = NSMutableAttributedString(string: "")
-        mutableAttributedString.addAttributes(
-            [
-                .font : UIFont.boldSystemFont(ofSize: 9)
-            ],
-            range: NSRange(location: 0, length: mutableAttributedString.length)
-        )
         
         let attributedString = NSAttributedString(string: data , attributes: [
-            .foregroundColor : DesignSystem.Color.InfoDeliver.negative.inUIColor(),
+            .foregroundColor : color,
             .font : UIFont.boldSystemFont(ofSize: 9)
         ])
         
         let updownSymbolAttachment = NSTextAttachment()
-        updownSymbolAttachment.image = DesignSystem.Icon.Input.descendent.fill().withTintColor(DesignSystem.Color.InfoDeliver.negative.inUIColor())
+        updownSymbolAttachment.image = symbol.withTintColor(color)
         updownSymbolAttachment.bounds = CGRect(x: 0, y: 0, width: 7, height: 7)
         
         let updownSymbol = NSMutableAttributedString(attachment: updownSymbolAttachment)
