@@ -81,7 +81,7 @@ class SearchView: BaseView {
     override func configureViewDetails() {
         //TODO: delete after collectionView data fetchable
         nftCollectionView.backgroundColor = .systemMint
-        coinCollectionView.backgroundColor = .systemIndigo
+        coinCollectionView.backgroundColor = DesignSystem.Color.Background.main.inUIColor()
     }
 }
 

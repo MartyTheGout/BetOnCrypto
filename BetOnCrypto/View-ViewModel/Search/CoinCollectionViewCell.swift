@@ -17,6 +17,7 @@ class CoinCollectionViewCell: UICollectionViewCell {
     let numberLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
+        label.textColor = DesignSystem.Color.Tint.main.inUIColor()
         return label
     }()
     
@@ -29,18 +30,19 @@ class CoinCollectionViewCell: UICollectionViewCell {
     let coinSymbolLabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 12)
+        label.textColor = DesignSystem.Color.Tint.main.inUIColor()
         return label
     }()
     
     let coinNameLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 9)
+        label.textColor = DesignSystem.Color.Tint.submain.inUIColor()
         return label
     }()
     
     let changePercentageLabel = {
         let label = UILabel()
-        
         return label
     }()
     
@@ -90,8 +92,12 @@ class CoinCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private func configureViewDetails() {
-        
+    private func configureViewDetails() {}
+    
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+        coinImageView.layer.masksToBounds = true
+        coinImageView.layer.cornerRadius = coinImageView.frame.height / 2
     }
 }
 
@@ -112,15 +118,30 @@ extension CoinCollectionViewCell {
     
     private func applyPercentageChange(data: String) {
         let mutableAttributedString = NSMutableAttributedString(string: "")
+        mutableAttributedString.addAttributes(
+            [
+                .font : UIFont.boldSystemFont(ofSize: 9)
+            ],
+            range: NSRange(location: 0, length: mutableAttributedString.length)
+        )
         
         let attributedString = NSAttributedString(string: data , attributes: [
             .foregroundColor : DesignSystem.Color.InfoDeliver.negative.inUIColor(),
-            .font : UIFont.systemFont(ofSize: 9)
+            .font : UIFont.boldSystemFont(ofSize: 9)
         ])
-        let updownSymbol = NSTextAttachment()
-        updownSymbol.image = DesignSystem.Icon.Input.descendent.toUIImage()
         
-        mutableAttributedString.append(NSAttributedString(attachment: updownSymbol))
+        let updownSymbolAttachment = NSTextAttachment()
+        updownSymbolAttachment.image = DesignSystem.Icon.Input.descendent.fill().withTintColor(DesignSystem.Color.InfoDeliver.negative.inUIColor())
+        updownSymbolAttachment.bounds = CGRect(x: 0, y: 0, width: 7, height: 7)
+        
+        let updownSymbol = NSMutableAttributedString(attachment: updownSymbolAttachment)
+        updownSymbol.addAttributes([
+            .font : UIFont.systemFont(ofSize: 9)
+        ], range: NSRange(location: 0, length: updownSymbol.length))
+        
+        mutableAttributedString.append(updownSymbol)
         mutableAttributedString.append(attributedString)
+        
+        changePercentageLabel.attributedText = mutableAttributedString
     }
 }
