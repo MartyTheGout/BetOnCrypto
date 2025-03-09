@@ -6,9 +6,41 @@
 //
 
 import Foundation
+import RealmSwift
 import Alamofire
 
 final class SearchDataRepository {
+    
+    private let realm = try! Realm()
+    
+    func printRepositorySandBox() {
+        print(realm.configuration.fileURL!)
+    }
+    
+    func getLikeRecords() -> Results<LikedCoin> {
+        realm.objects(LikedCoin.self)
+    }
+    
+    func addLikeRecords(of data: LikedCoin) {
+        do {
+            try realm.write {
+                realm.add(data)
+            }
+        } catch {
+            print("[Error] write LikedCoin record in Repository Failed")
+        }
+    }
+    
+    func deleteLikeRecords(of data: LikedCoin) {
+        do {
+            try realm.write {
+                realm.delete(data)
+            }
+        } catch {
+            print("[Error] delete LikedCoin record in Repository Failed")
+        }
+    }
+    
     func getCoinWithKeyword(
         keyword: String,
         dataFeeder : @escaping ([SearchCoin]) -> Void
