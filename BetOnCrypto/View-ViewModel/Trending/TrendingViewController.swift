@@ -74,22 +74,20 @@ final class TrendingViewController : BaseViewController {
         }.disposed(by: disposeBag)
         
         mainView.coinCollectionView.rx.modelSelected(TrendingCoinPresentable.self).bind(with: self) { owner, coinData in
-            print("item Selected")
             owner.navigateToDetailView(with: coinData.name)
         }.disposed(by: disposeBag)
         
-        Observable.combineLatest(
-            mainView.searchField.textField.rx.controlEvent(.editingDidEnd),
-            mainView.searchField.textField.rx.text.orEmpty
-        ).bind(with: self) { owner, combinedEvent in
-            
-        }
+        mainView.searchField.textField.rx.controlEvent(.editingDidEndOnExit)
+            .withLatestFrom(mainView.searchField.textField.rx.text.orEmpty)
+            .bind(with: self) { owner, text in
+                owner.navigateToSearchView(with: text)
+            }
+            .disposed(by: disposeBag)
     }
 }
 
 extension TrendingViewController {
     private func updateDataFetchingTime() {
-        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM.dd hh:mm기준"
         
