@@ -7,11 +7,22 @@
 
 import Foundation
 
-struct TrendingCoinItem {
+struct TrendingResponse: Codable {
+    let coins : [TrendingCoinItem]
+    let nfts : [TrendingNFTItem]
+//    let categories : TrendingCategoryItem
+}
+
+let mockedTrendingResponse = TrendingResponse(
+    coins: mockTrendingCoins,
+    nfts: mockTrendingNFTs
+)
+
+struct TrendingCoinItem: Codable {
   let item: TrendingCoinDetails
 }
 
-struct TrendingCoinDetails {
+struct TrendingCoinDetails: Codable {
   let id: String
   let coinId: Int
   let name: String
@@ -26,7 +37,7 @@ struct TrendingCoinDetails {
   let data: TrendingCoinData
 }
 
-struct TrendingCoinData {
+struct TrendingCoinData: Codable {
   let price: String
   let priceBtc: String
   let priceChangePercentage24h: [String: Double]
@@ -36,15 +47,14 @@ struct TrendingCoinData {
   let totalVolumeBtc: String
   let sparkline: String
   let content: TrendingContentInfo?
-
 }
 
-struct TrendingContentInfo  {
+struct TrendingContentInfo: Codable  {
   let title: String?
   let description: String?
 }
 
-struct TrendingNFTItem {
+struct TrendingNFTItem: Codable {
   let id: String
   let name: String
   let symbol: String
@@ -56,7 +66,7 @@ struct TrendingNFTItem {
   let data: TrendingNFTData
 }
 
-struct TrendingNFTData {
+struct TrendingNFTData: Codable {
   let floorPrice: String
   let floorPriceInUsd24hPercentageChange: String
   let h24Volume: String
