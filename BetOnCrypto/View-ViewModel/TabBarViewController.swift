@@ -26,7 +26,7 @@ final class TabBarViewController: UITabBarController {
         mainNC.tabBarItem = UITabBarItem(title: "거래소", image: marketVCSymbol, tag: 0)
         
         let searchVCSymbol = DesignSystem.Icon.Info.coinAndNft.toUIImage().withTintColor(unselectedColor)
-        let searchNC = UINavigationController(rootViewController: SearchViewController())
+        let searchNC = UINavigationController(rootViewController: TrendingViewController())
         searchNC.tabBarItem = UITabBarItem(title: "코인정보", image: searchVCSymbol, tag: 1)
         
         let portfolioVCSymbol = DesignSystem.Icon.Input.star.toUIImage().withTintColor(unselectedColor)
