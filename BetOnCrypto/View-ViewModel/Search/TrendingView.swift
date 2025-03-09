@@ -80,7 +80,7 @@ final class TrendingView: BaseView {
     
     override func configureViewDetails() {
         //TODO: delete after collectionView data fetchable
-        nftCollectionView.backgroundColor = .systemMint
+        nftCollectionView.backgroundColor = DesignSystem.Color.Background.main.inUIColor()
         coinCollectionView.backgroundColor = DesignSystem.Color.Background.main.inUIColor()
     }
 }
@@ -109,18 +109,18 @@ extension TrendingView {
     
     private func create1X5CompositionalLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, _ in
-            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4.5), heightDimension: .fractionalHeight(1))
+            let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             item.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 3, bottom: 3, trailing: 3)
             
             let innerGroupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
             let innerGroup = NSCollectionLayoutGroup.horizontal(layoutSize: innerGroupSize, subitems: [item])
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(150))
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4.5), heightDimension: .absolute(150))
             
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [innerGroup])
             let section = NSCollectionLayoutSection(group: group)
-            section.orthogonalScrollingBehavior = .paging
+            section.orthogonalScrollingBehavior = .groupPaging
             return section
         })
         
