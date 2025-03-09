@@ -12,11 +12,11 @@ import RxCocoa
 
 final class TrendingViewController : BaseViewController {
     
-    let viewModel = TrendingViewModel()
+    private let viewModel = TrendingViewModel()
     
-    let mainView = TrendingView()
+    private let mainView = TrendingView()
     
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     
     override func loadView() {
         self.view = mainView
@@ -34,13 +34,13 @@ final class TrendingViewController : BaseViewController {
         let title = UILabel()
         title.text = "가상자산 / 심볼검색"
         title.font = .boldSystemFont(ofSize: 17)
-
+        
         let spacer = UIView()
         let divider = Divider()
         
         let stack = UIStackView(arrangedSubviews: [title, spacer])
         stack.axis = .horizontal
-
+        
         stack.snp.makeConstraints {
             $0.width.greaterThanOrEqualTo(500).priority(.low)
         }
@@ -58,14 +58,20 @@ final class TrendingViewController : BaseViewController {
         view.backgroundColor = .white
     }
     
-    func bind() {
+    private func bind() {
         let input = TrendingViewModel.Input()
         let output = viewModel.transform(input)
         
         output.coinDataSeq.drive(mainView.coinCollectionView.rx.items(cellIdentifier: CoinCollectionViewCell.id, cellType: CoinCollectionViewCell.self)) { row, element, cell in
             dump(element)
+            
             cell.applyData(with: element, number: row + 1)
             
         }.disposed(by: disposeBag)
+        
+        output.nftDataSeq.drive { value in
+            dump("==== arrived from new === ")
+            dump(value)
+        }
     }
 }

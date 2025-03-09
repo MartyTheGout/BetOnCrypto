@@ -9,39 +9,39 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class CoinCollectionViewCell: UICollectionViewCell {
+final class CoinCollectionViewCell: UICollectionViewCell {
     static var id : String {
         String(describing: self)
     }
     
-    let numberLabel = {
+    private let numberLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12)
         label.textColor = DesignSystem.Color.Tint.main.inUIColor()
         return label
     }()
     
-    let coinImageView = {
+    private let coinImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
-    let coinSymbolLabel = {
+    private let coinSymbolLabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 12)
         label.textColor = DesignSystem.Color.Tint.main.inUIColor()
         return label
     }()
     
-    let coinNameLabel = {
+    private let coinNameLabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 9)
         label.textColor = DesignSystem.Color.Tint.submain.inUIColor()
         return label
     }()
     
-    let changePercentageLabel = {
+    private let changePercentageLabel = {
         let label = UILabel()
         return label
     }()

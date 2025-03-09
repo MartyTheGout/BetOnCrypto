@@ -10,10 +10,10 @@ import RxSwift
 import RxCocoa
 
 struct TrendingCoinPresentable {
-  let name: String
-  let symbol: String
-  let thumb: String
-  let data: TrendingCoinDataPresentable
+    let name: String
+    let symbol: String
+    let thumb: String
+    let data: TrendingCoinDataPresentable
 }
 
 struct TrendingCoinDataPresentable {
@@ -21,14 +21,14 @@ struct TrendingCoinDataPresentable {
 }
 
 struct TrendingNFTPresentable {
-  let name: String
-  let thumb: String
-  let floorPrice24hPercentageChange: String
-  let data: TrendingNFTDataPresentable
+    let name: String
+    let thumb: String
+    let floorPrice24hPercentageChange: String
+    let data: TrendingNFTDataPresentable
 }
 
 struct TrendingNFTDataPresentable: Codable {
-  let floorPrice: String
+    let floorPrice: String
 }
 
 final class TrendingViewModel {
@@ -60,10 +60,10 @@ final class TrendingViewModel {
         registerFetchingQueue()
         
         input.fetchDataRequest.bind(with: self) { owner, _ in
-//            owner.dataRepository.getTrendingMock { mockCoin, mockNft in
-//                owner.coinRelay.accept(mockCoin.suffix(14))
-//                owner.nftRelay.accept(mockNft.suffix(7))
-//            }
+            //            owner.dataRepository.getTrendingMock { mockCoin, mockNft in
+            //                owner.coinRelay.accept(mockCoin.suffix(14))
+            //                owner.nftRelay.accept(mockNft.suffix(7))
+            //            }
             
             owner.dataRepository.getTrendingData { coinData, nftData in
                 owner.coinRelay.accept(coinData.suffix(14))

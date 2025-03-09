@@ -7,14 +7,14 @@
 
 import UIKit
 
-class TrendingView: BaseView {
+final class TrendingView: BaseView {
     
     let searchField = CustomSearchField()
     
     lazy var coinCollectionView = UICollectionView(frame: .zero, collectionViewLayout: create2X7CompositionalLayout())
     lazy var nftCollectionView = UICollectionView(frame: .zero, collectionViewLayout: create1X5CompositionalLayout())
     
-    let coinIntroductionLabel = {
+    private let coinIntroductionLabel = {
         let label = UILabel()
         label.text = "인기 검색어"
         label.font = .systemFont(ofSize: 15, weight: .bold)
@@ -22,7 +22,7 @@ class TrendingView: BaseView {
         return label
     }()
     
-    let nftIntroductionLabel = {
+    private let nftIntroductionLabel = {
         let label = UILabel()
         label.text = "인기 NFT"
         label.font = .systemFont(ofSize: 15, weight: .bold)
@@ -87,7 +87,7 @@ class TrendingView: BaseView {
 
 extension TrendingView {
     
-    func create2X7CompositionalLayout() -> UICollectionViewLayout {
+    private func create2X7CompositionalLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, _ in
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1/7))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -107,7 +107,7 @@ extension TrendingView {
         return layout
     }
     
-    func create1X5CompositionalLayout() -> UICollectionViewLayout {
+    private func create1X5CompositionalLayout() -> UICollectionViewLayout {
         let layout = UICollectionViewCompositionalLayout(sectionProvider: { sectionIndex, _ in
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1/4.5), heightDimension: .fractionalHeight(1))
             let item = NSCollectionLayoutItem(layoutSize: itemSize)

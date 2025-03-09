@@ -7,9 +7,9 @@
 
 import UIKit
 
-class CustomSearchField : BaseView {
+final class CustomSearchField : BaseView {
     
-    let containerView = UIView()
+    private let containerView = UIView()
     
     let textField = {
         let textField = UITextField()
@@ -23,7 +23,7 @@ class CustomSearchField : BaseView {
         return textField
     }()
     
-    let searchImage = {
+    private let searchImage = {
         let imageView = UIImageView()
         imageView.image = DesignSystem.Icon.Input.search.toUIImage()
         imageView.contentMode = .scaleAspectFit
