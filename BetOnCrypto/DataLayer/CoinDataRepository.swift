@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 import Alamofire
 
-final class SearchDataRepository {
+final class CoinDataRepository {
     
     private let realm = try! Realm()
     
@@ -45,6 +45,7 @@ final class SearchDataRepository {
         }
     }
     
+    //MARK: - Search
     func getCoinWithKeyword(
         keyword: String,
         dataFeeder : @escaping ([SearchCoin]) -> Void
@@ -60,5 +61,21 @@ final class SearchDataRepository {
     
     func getTrendingMock(dataFeeder: @escaping ([SearchCoin]) -> Void) {
         dataFeeder(mockSearchCoin)
+    }
+    
+    //MARK: - Detail
+    func getCoinDetail(id: String, dataFeeder : @escaping (CoinDetail) -> Void ) {
+        NetworkManager.shared.callRequest(CoinAndNFTRouter.detail(id: id)) { (result: Result<CoinDetail, AFError>) in
+            switch result {
+            case .success(let detailResult) :
+                dataFeeder(detailResult)
+            case .failure(let error):
+                print(error)
+            }
+        }
+    }
+    
+    func getDetailMock(dataFeeder : @escaping (CoinDetail) -> Void ) {
+        dataFeeder(mockCoinDetail)
     }
 }
