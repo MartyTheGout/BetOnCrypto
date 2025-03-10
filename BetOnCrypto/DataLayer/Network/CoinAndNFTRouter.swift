@@ -35,8 +35,9 @@ enum CoinAndNFTRouter: URLRequestConvertible {
             "query": query
         ]
         case .detail(let id) : return [
-            "quote_currencies":"KRW",
-            "ids": id
+            "vs_currency":"krw",
+            "ids": id,
+            "sparkline": "true"
         ]
         }
     }
@@ -48,7 +49,6 @@ enum CoinAndNFTRouter: URLRequestConvertible {
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
-        
-        return urlRequest           
+        return urlRequest
     }
 }
