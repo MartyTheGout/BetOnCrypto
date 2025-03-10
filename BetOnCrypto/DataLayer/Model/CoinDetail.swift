@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CoinDetail {
+struct CoinDetail: Codable {
   let id: String
   let symbol: String
   let name: String
@@ -40,14 +40,14 @@ struct CoinDetail {
 }
 
 // MARK: - 코인 투자 수익률 정보
-struct CoinROI {
+struct CoinROI: Codable {
   let times: Double?
   let currency: String?
   let percentage: Double?
 }
 
 // MARK: - 스파크라인 차트 데이터
-struct SparklineData {
+struct SparklineData: Codable {
   let price: [Double]
 }
 
