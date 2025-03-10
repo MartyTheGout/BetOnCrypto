@@ -23,7 +23,7 @@ struct SearchCoinPresentable {
 
 final class SearchViewModel {
     
-    private let repository = SearchDataRepository()
+    private let repository = CoinDataRepository()
     
     private var notificationToken: NotificationToken?
     

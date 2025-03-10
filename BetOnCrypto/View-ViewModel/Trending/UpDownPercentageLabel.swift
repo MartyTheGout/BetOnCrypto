@@ -9,7 +9,7 @@ import UIKit
 
 final class UpDownPercentageLabel: UILabel {
     
-    func applyPercentageData(with data: String) {
+    func applyPercentageData(with data: String, bigSize: Bool = false) {
         let color = data.starts(with: "-") ?
         DesignSystem.Color.InfoDeliver.negative.inUIColor() :
         DesignSystem.Color.InfoDeliver.positive.inUIColor()
@@ -18,21 +18,21 @@ final class UpDownPercentageLabel: UILabel {
         DesignSystem.Icon.Input.descendent.fill() :
         DesignSystem.Icon.Input.ascendent.fill()
         
+        let fontSize = bigSize ? 15.0 : 9.0
+        let symbolSize = bigSize ? 13.0 : 7.0
+        
         let mutableAttributedString = NSMutableAttributedString(string: "")
         
         let attributedString = NSAttributedString(string: data , attributes: [
             .foregroundColor : color,
-            .font : UIFont.boldSystemFont(ofSize: 9)
+            .font : UIFont.boldSystemFont(ofSize: fontSize)
         ])
         
         let updownSymbolAttachment = NSTextAttachment()
         updownSymbolAttachment.image = symbol.withTintColor(color)
-        updownSymbolAttachment.bounds = CGRect(x: 0, y: 0, width: 7, height: 7)
+        updownSymbolAttachment.bounds = CGRect(x: 0, y: 0, width: symbolSize, height: symbolSize)
         
         let updownSymbol = NSMutableAttributedString(attachment: updownSymbolAttachment)
-        updownSymbol.addAttributes([
-            .font : UIFont.systemFont(ofSize: 9)
-        ], range: NSRange(location: 0, length: updownSymbol.length))
         
         mutableAttributedString.append(updownSymbol)
         mutableAttributedString.append(attributedString)
