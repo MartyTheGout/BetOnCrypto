@@ -8,12 +8,16 @@
 import UIKit
 import SnapKit
 import Kingfisher
+import RxSwift
+import RxCocoa
 
 final class CoinSearchResultViewCell: UICollectionViewCell {
     
     static var id : String {
         String(describing: self)
     }
+    
+    var disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,9 +30,9 @@ final class CoinSearchResultViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //TODO: This seems to be required
     override func prepareForReuse() {
         super.prepareForReuse()
+        disposeBag = DisposeBag()
     }
     
     private let imageView = {
@@ -138,12 +142,11 @@ extension CoinSearchResultViewCell {
         if let rankInfo = data.marketCapRank {
             rankingLabel.text = "#\(rankInfo)"
         }
-        
         applyLikedDataToButton(with: data.liked)
     }
     
     func applyLikedDataToButton(with liked: Bool) {
-        let image = liked ? DesignSystem.Icon.Input.star.toUIImage() : DesignSystem.Icon.Input.star.fill()
+        let image = liked ? DesignSystem.Icon.Input.star.fill() : DesignSystem.Icon.Input.star.toUIImage()
         
         likeButton.setImage(image, for: .normal)
     }

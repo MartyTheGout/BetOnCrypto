@@ -25,12 +25,19 @@ final class SearchViewModel {
     
     private let repository = SearchDataRepository()
     
+    private var notificationToken: NotificationToken?
+    
     private let disposeBag = DisposeBag()
+    
+    deinit {
+        print("[SearchViewModel Deinit] Realm:NotificationToken also deinit")
+        notificationToken?.invalidate()
+    }
     
     struct Input {
         let searchEnter : ControlEvent<Void>
         let searchKeyword : ControlProperty<String>
-        let likedInputSeq = BehaviorRelay(value: "")
+        let likedInputSeq = PublishRelay<String>()
     }
     
     struct Output {
@@ -44,8 +51,8 @@ final class SearchViewModel {
         
         repository.printRepositorySandBox()// for debugging
         
-        let likedCoinRecords = repository.getLikeRecords()
-        let likedDataSeq = BehaviorSubject(value: likedCoinRecords)
+        let likedDataSeq = BehaviorRelay<[String]>(value: [])
+        makeRealmDataSeq(in: likedDataSeq)
         
         input.searchEnter.withLatestFrom(input.searchKeyword).distinctUntilChanged()
             .bind(with: self) { owner, value in
@@ -53,9 +60,7 @@ final class SearchViewModel {
                 owner.repository.getCoinWithKeyword(keyword: value) { value in
                     let convertedOne = value.map { searchCoin in
                         
-                        let likedOrNot = likedCoinRecords.where {
-                            $0.id == searchCoin.id
-                        }.isEmpty ? false : true
+                        let likedOrNot = likedDataSeq.value.contains(searchCoin.id)
                         
                         return owner.convertOriginalToPresentable(of: searchCoin, likedOrNot: likedOrNot)
                     }
@@ -67,9 +72,8 @@ final class SearchViewModel {
         likedDataSeq.bind(with: self) {owner, value in
             let currentSearchResult = coinSearchResultRelay.value
             let updateReflectedOne = currentSearchResult.map { coinResult in
-                let likedOrnot = likedCoinRecords.where { record in
-                    record.id == coinResult.id
-                }.isEmpty ? false : true
+                
+                let likedOrnot = likedDataSeq.value.contains(coinResult.id)
                 
                 var updateReflected = coinResult
                 updateReflected.liked = likedOrnot
@@ -80,11 +84,12 @@ final class SearchViewModel {
         }.disposed(by: disposeBag)
         
         input.likedInputSeq.bind(with: self) { owner, value in
-            if likedCoinRecords.where({ $0.id == value}).isEmpty {
-                owner.repository.addLikeRecords(of: LikedCoin(id: value))
-            } else {
+            if likedDataSeq.value.contains(value) {
                 owner.repository.deleteLikeRecords(of: LikedCoin(id: value)) //TODO: Syntax check
+            }else {
+                owner.repository.addLikeRecords(of: LikedCoin(id: value))
             }
+            
         }.disposed(by: disposeBag)
         
         return Output(
@@ -106,5 +111,24 @@ extension SearchViewModel {
             large: data.large,
             liked: likedOrNot
         )
+    }
+}
+
+extension SearchViewModel {
+    func makeRealmDataSeq(in relay : BehaviorRelay<[String]>) {
+        let likedCoinRecords = repository.getLikeRecords()
+        
+        notificationToken = likedCoinRecords.observe { changes in
+            switch changes {
+            case .initial(let results):
+                let array = Array(results)
+                relay.accept(array.map { $0.id })
+            case .update(let results, _, _, _) :
+                let array = Array(results)
+                relay.accept(array.map { $0.id })
+            case .error(let error) :
+                print("[Error]repository observer failed", error)
+            }
+        }
     }
 }

@@ -91,23 +91,22 @@ class SearchViewController: BaseViewController {
             output.activityIndicatrControlSeq.accept(false)
         }.disposed(by: disposeBag)
         
-        output.coinSearchResultSeq.drive(mainView.coinSearchResultView.collectionView.rx.items(cellIdentifier: CoinSearchResultViewCell.id, cellType: CoinSearchResultViewCell.self)) { [weak self] row, element, cell in
+        output.coinSearchResultSeq.drive(mainView.coinSearchResultView.collectionView.rx.items(cellIdentifier: CoinSearchResultViewCell.id, cellType: CoinSearchResultViewCell.self)) { row, element, cell in
             cell.applyData(with: element)
             
             //TODO: Test Required
             cell.likeButton.rx.tap.bind {
+                print("like99 called", element.id)
                 input.likedInputSeq.accept(element.id)
-            }.disposed(by: self?.disposeBag ?? DisposeBag()) // TODO: Test Memory leak
+            }.disposed(by: cell.disposeBag)
             
         }.disposed(by: disposeBag)
         
         output.activityIndicatrControlSeq.bind(with: self) { owner, value in
             // true => show indicator , false => delete indicator
             if value {
-                print(value, "activityIndicator")
                 owner.createSpinnerView()
             } else {
-                print(value, "activityIndicator")
                 owner.deleteSpinnerView()
             }
         }.disposed(by: disposeBag)
@@ -126,7 +125,6 @@ class SearchViewController: BaseViewController {
 extension SearchViewController {
     private func triggerDataStream() {
         searchBar.searchTextField.sendActions(for: .editingDidEndOnExit)
-        print("initial search event sent ")
     }
 }
 
@@ -183,6 +181,5 @@ extension SearchViewController {
         childVC.willMove(toParent: nil)
         childVC.view.removeFromSuperview()
         childVC.removeFromParent()
-        print(childVC, "delete")
     }
 }
