@@ -39,6 +39,7 @@ extension TrendingDataRepository {
             let percetageKRW = coinDetail.data.priceChangePercentage24h["krw"]!
             
             return TrendingCoinPresentable(
+                id: coinDetail.id,
                 name: coinDetail.name,
                 symbol: coinDetail.symbol,
                 thumb: coinDetail.thumb,
