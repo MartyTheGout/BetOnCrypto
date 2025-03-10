@@ -33,8 +33,12 @@ final class SearchDataRepository {
     
     func deleteLikeRecords(of data: LikedCoin) {
         do {
-            try realm.write {
-                realm.delete(data)
+            if let record = realm.object(ofType: LikedCoin.self, forPrimaryKey: data.id) {
+                try realm.write {
+                    realm.delete(record)
+                }
+            } else {
+                print("[Error] Object not found in Realm")
             }
         } catch {
             print("[Error] delete LikedCoin record in Repository Failed")
