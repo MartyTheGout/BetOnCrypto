@@ -6,10 +6,18 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
-class DetailViewController: BaseViewController {
+final class DetailViewController: BaseViewController {
     
-    var keyword : String
+    private var keyword : String
+    
+    private let viewModel = DetailViewModel()
+    
+    private let disposeBag = DisposeBag()
+    
+    private let mainView = DetailView()
     
     init(keyword: String) {
         self.keyword = keyword
@@ -20,9 +28,23 @@ class DetailViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func loadView() {
+        self.view = mainView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(self, "didload")
-        print(self, keyword)
+        bind()
+    }
+    
+    func bind() {
+        let input = DetailViewModel.Input(coinId: keyword)
+        let output = viewModel.transform(input)
+        
+        output.detailDataSeq.drive(with: self) { owner, coinDetail in
+            if let coinDetail {
+                owner.mainView.applyData(with: coinDetail)
+            }
+        }.disposed(by: disposeBag)
     }
 }
