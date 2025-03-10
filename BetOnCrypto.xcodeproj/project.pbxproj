@@ -16,6 +16,7 @@
 		4016C4682D79B5DB0080ACAF /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4016C4672D79B5DB0080ACAF /* SnapKit */; };
 		4016C6F92D7AB5160080ACAF /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4016C6F82D7AB5160080ACAF /* RealmSwift */; };
 		4016C6FA2D7AB5270080ACAF /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 4016C6F82D7AB5160080ACAF /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		403C39DA2D7ECCA100D8FEC2 /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 403C39D92D7ECCA100D8FEC2 /* DGCharts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				403C39DA2D7ECCA100D8FEC2 /* DGCharts in Frameworks */,
 				4016C45F2D79B5B30080ACAF /* RxSwift in Frameworks */,
 				4016C4622D79B5C40080ACAF /* Alamofire in Frameworks */,
 				4016C6F92D7AB5160080ACAF /* RealmSwift in Frameworks */,
@@ -121,6 +123,7 @@
 				4016C4642D79B5CF0080ACAF /* Kingfisher */,
 				4016C4672D79B5DB0080ACAF /* SnapKit */,
 				4016C6F82D7AB5160080ACAF /* RealmSwift */,
+				403C39D92D7ECCA100D8FEC2 /* DGCharts */,
 			);
 			productName = BetOnCrypto;
 			productReference = 4016C3962D79AF620080ACAF /* BetOnCrypto.app */;
@@ -157,6 +160,7 @@
 				4016C4632D79B5CF0080ACAF /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				4016C4662D79B5DB0080ACAF /* XCRemoteSwiftPackageReference "SnapKit" */,
 				4016C6F72D7AB5160080ACAF /* XCRemoteSwiftPackageReference "realm-swift" */,
+				403C39D82D7ECCA100D8FEC2 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4016C3972D79AF620080ACAF /* Products */;
@@ -453,6 +457,14 @@
 				version = 20.0.1;
 			};
 		};
+		403C39D82D7ECCA100D8FEC2 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ChartsOrg/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -490,6 +502,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4016C6F72D7AB5160080ACAF /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		403C39D92D7ECCA100D8FEC2 /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 403C39D82D7ECCA100D8FEC2 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
