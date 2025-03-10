@@ -8,6 +8,8 @@ BetOnCrypto.xcodeproj/project.xcworkspace/xcshareddata/
 *.dSYM.zip
 *.dSYM
 
+.DS_Store
+
 ## Playgrounds
 timeline.xctimeline
 playground.xcworkspace
@@ -25,5 +27,5 @@ playground.xcworkspace
 .build/
 
 
-
+## Sesitive Infos
 ExternalDatasource.swift
