@@ -8,9 +8,15 @@
 import UIKit
 
 final class PortfolioViewController : BaseViewController {
+    
+    private let mainView = InPreparingView()
+    
+    override func loadView() {
+        self.view = mainView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(#function, String(describing: self))
     }
     
     override func configureViewDetails() {
