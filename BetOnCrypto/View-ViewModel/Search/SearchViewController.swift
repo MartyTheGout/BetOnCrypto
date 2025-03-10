@@ -72,12 +72,6 @@ class SearchViewController: BaseViewController {
         self.navigationItem.leftBarButtonItems = [backBarButtonItem, UIBarButtonItem(customView: searchBar)]
     }
     
-    override func configureViewHierarchy() {}
-    
-    override func configureViewConstraints() {}
-    
-    override func configureViewDetails() {}
-    
     private func bind() {
         
         let input = SearchViewModel.Input(
@@ -100,6 +94,10 @@ class SearchViewController: BaseViewController {
                 input.likedInputSeq.accept(element.id)
             }.disposed(by: cell.disposeBag)
             
+        }.disposed(by: disposeBag)
+        
+        mainView.coinSearchResultView.collectionView.rx.modelSelected(SearchCoinPresentable.self).bind(with: self) { owner, value in
+            owner.navigateToDetailView(with: value.id)
         }.disposed(by: disposeBag)
         
         output.activityIndicatrControlSeq.bind(with: self) { owner, value in
@@ -156,6 +154,11 @@ extension SearchViewController {
     
     private func navigateToBackViewController() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    private func navigateToDetailView(with keyword: String) {
+        let destinationVC = DetailViewController(keyword: keyword)
+        navigationController?.pushViewController(destinationVC, animated: true)
     }
 }
 
