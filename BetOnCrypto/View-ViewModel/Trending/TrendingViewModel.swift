@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 
 struct TrendingCoinPresentable {
+    let id: String
     let name: String
     let symbol: String
     let thumb: String

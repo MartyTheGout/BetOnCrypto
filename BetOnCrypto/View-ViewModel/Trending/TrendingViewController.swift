@@ -88,7 +88,7 @@ final class TrendingViewController : BaseViewController {
         }.disposed(by: disposeBag)
         
         mainView.coinCollectionView.rx.modelSelected(TrendingCoinPresentable.self).bind(with: self) { owner, coinData in
-            owner.navigateToDetailView(with: coinData.name)
+            owner.navigateToDetailView(with: coinData.id)
         }.disposed(by: disposeBag)
         
         mainView.searchField.textField.rx.controlEvent(.editingDidEndOnExit)
