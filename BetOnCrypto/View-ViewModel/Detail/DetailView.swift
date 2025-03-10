@@ -24,11 +24,11 @@ final class DetailView: BaseView {
     
     private let changeLabel = UpDownPercentageLabel()
     
-    let lineChartView = LineChartView() // gradient fill
+    let lineChartView = LineChartView()
     
     private let updateTimeStampLabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 9)
+        label.font = .systemFont(ofSize: 12)
         label.textColor = DesignSystem.Color.Tint.submain.inUIColor()
         return label
     }()
@@ -97,7 +97,7 @@ final class DetailView: BaseView {
         
         lineChartView.snp.makeConstraints {
             $0.horizontalEdges.equalTo(contentView).inset(16)
-            $0.height.equalTo(350)
+            $0.height.equalTo(lineChartView.snp.width).multipliedBy(2.0/3.0)
             $0.top.equalTo(changeLabel.snp.bottom).offset(8)
         }
         
@@ -275,34 +275,28 @@ final class DetailView: BaseView {
 
 extension DetailView {
     
-    func applyData(with data: CoinDetail) {
-        priceLabel.text = "₩\(data.currentPrice)"
+    func applyData(with data: CoinDetailPresentable) {
+        priceLabel.text = data.currentPrice
         
-        if let percentageValue = data.priceChangePercentage24h {
-            changeLabel.applyPercentageData(with: "\(percentageValue)", bigSize: true)
+        changeLabel.applyPercentageData(with: data.priceChangePercentage24h, bigSize: true)
+        
+        if let curvedValues = data.sparklineIn7d {
+            setChart(values: curvedValues)
         }
         
-        let curvedValues = data.sparklineIn7d!.price.enumerated().filter { offset, element in
-            offset % 2 == 0
-        }.map { $0.element }
+        updateTimeStampLabel.text = data.lastUpdated
         
-        setChart(values: curvedValues)
+        highPrice24hValue.text = data.high24h
+        highPriceAllTimeValue.text = data.ath
+        highPriceAllTimeDate.text = data.athDate
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "M/dd hh:mm:ss 업데이트"
-        updateTimeStampLabel.text = dateFormatter.string(from: Date())
+        lowPrice24hValue.text = data.low24h
+        lowPriceAllTimeValue.text = data.atl
+        lowPriceAllTimeDate.text = data.atlDate
         
-        highPrice24hValue.text = "\(data.high24h)"
-        highPriceAllTimeValue.text = "\(data.ath)"
-        highPriceAllTimeDate.text = "\(data.athDate)"
-        
-        lowPrice24hValue.text = "\(data.low24h)"
-        lowPriceAllTimeValue.text = "\(data.atl)"
-        lowPriceAllTimeDate.text = "\(data.atlDate)"
-        
-        capitalValue.text = "\(data.marketCap)"
-        fDVValue.text = "\(data.fullyDilutedValuation)"
-        volumnValue.text = "\(data.totalVolume)"
+        capitalValue.text = data.marketCap
+        fDVValue.text = data.fullyDilutedValuation
+        volumnValue.text = data.totalVolume
         
     }
     
@@ -348,17 +342,18 @@ extension DetailView {
         
         let gradientColors = [
             color.cgColor,
-            color.withAlphaComponent(0.6).cgColor,
-            color.withAlphaComponent(0.2).cgColor
+            color.cgColor,
+            color.withAlphaComponent(0.5).cgColor
         ] as CFArray
-        let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: gradientColors, locations: [1.0, 0.5, 0.0])!
+        let gradient = CGGradient(colorsSpace: CGColorSpaceCreateDeviceRGB(), colors: gradientColors, locations: [1.0, 0.2, 0.0])!
         
         lineChartDataSet.fill = LinearGradientFill(gradient: gradient, angle: 90.0)
         lineChartDataSet.drawFilledEnabled = true
         
         lineChartDataSet.highlightEnabled = false
-        lineChartDataSet.gradientPositions = [0.0, 1.0]
+        
         lineChartDataSet.isDrawLineWithGradientEnabled = true
+        lineChartDataSet.gradientPositions = [0.0, 1.0]
         
         lineChartDataSet.colors = [DesignSystem.Color.InfoDeliver.negative.inUIColor()]
         lineChartDataSet.lineWidth = 2
