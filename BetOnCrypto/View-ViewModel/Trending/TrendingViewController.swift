@@ -73,15 +73,15 @@ final class TrendingViewController : BaseViewController {
         }.disposed(by: disposeBag)
         
         output.coinDataSeq.filter { !$0.isEmpty }.asObservable().take(1)
-//            .do(
-//                onDispose: {
-//                    print("TrendingViewController:coinDataSeq:onceSubscription || disposed completely")
-//                }
-//            )
+        //            .do(
+        //                onDispose: {
+        //                    print("TrendingViewController:coinDataSeq:onceSubscription || disposed completely")
+        //                }
+        //            )
             .bind(with: self) { owner, _ in
                 owner.deleteSpinnerView()
             }
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
         
         output.nftDataSeq.drive(mainView.nftCollectionView.rx.items(cellIdentifier: NFTCollectionViewCell.id, cellType: NFTCollectionViewCell.self)) { row, element, cell in
             cell.applyData(with: element)
@@ -94,7 +94,15 @@ final class TrendingViewController : BaseViewController {
         mainView.searchField.textField.rx.controlEvent(.editingDidEndOnExit)
             .withLatestFrom(mainView.searchField.textField.rx.text.orEmpty)
             .bind(with: self) { owner, text in
-                owner.navigateToSearchView(with: text)
+                
+                let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+                
+                if trimmedText.count > 0 {
+                    owner.navigateToSearchView(with: text)
+                } else {
+                    owner.mainView.searchField.textField.endEditing(true)
+                    owner.mainView.searchField.textField.text = ""
+                }
             }
             .disposed(by: disposeBag)
         
@@ -123,6 +131,7 @@ extension TrendingViewController {
     }
 }
 
+//MARK: - Activity Indicator
 extension TrendingViewController {
     private func createSpinnerView() {
         let child = SpinnerViewController()
