@@ -76,5 +76,6 @@ class NumberFormatManager {
     func setPercentageStyle() {
         setDefaultRoudingMode()
         numberFormatter.numberStyle = .percent
+        numberFormatter.maximumFractionDigits = 2
     }
 }
