@@ -51,7 +51,7 @@ extension MarketDataRepository {
             originalCoin : originalData.market,
             presentableCoin: covertCoinNameWithSlash(with: originalData.market),
             originalPrice : originalData.tradePrice,
-            presentablePrice: NumberFormatManager.shared.getDecialWithMax2FD(originalValue: originalData.tradePrice),
+            presentablePrice: NumberFormatManager.shared.getCurrentPriceStyle(originalValue: originalData.tradePrice),
             originalPercentage: originalData.signedChangeRate,
             presentablePercentage: NumberFormatManager.shared.getPercentage(originalValue: originalData.signedChangeRate),
             originalDiff : originalData.signedChangePrice,
