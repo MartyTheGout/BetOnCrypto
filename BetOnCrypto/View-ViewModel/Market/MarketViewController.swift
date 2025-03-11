@@ -36,12 +36,10 @@ final class MarketViewController : BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //TODO: make 5sec fetch work, switch on
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //TODO: make 5sec fetch work, switch off
     }
     
     private func configureNavigationTitleView() {
@@ -63,8 +61,9 @@ final class MarketViewController : BaseViewController {
         
         navigationController?.navigationBar.addSubview(divider)
         divider.snp.makeConstraints {
-            $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview().offset(-1)
+            $0.height.equalTo(1)
+            $0.horizontalEdges.equalToSuperview()
         }
     }
     
