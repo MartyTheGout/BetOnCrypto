@@ -118,8 +118,8 @@ final class DetailViewController: BaseViewController {
         likeButtonItem.rx.tap.withLatestFrom(output.detailDataSeq)
             .compactMap { coinDetail in coinDetail }
             .bind(with: self) { owner, value in
-            input.likeInputSeq.accept(DetailLike(id: value.id, name: value.name))
-        }.disposed(by: disposeBag)
+                input.likeInputSeq.accept(DetailLike(id: value.id, name: value.name))
+            }.disposed(by: disposeBag)
         
         output.likeOutputSeq.drive(with: self) { owner, value in
             owner.showLikeToastMessage(with: value)
@@ -180,7 +180,7 @@ extension DetailViewController {
         childVC.willMove(toParent: nil)
         childVC.view.removeFromSuperview()
         childVC.removeFromParent()
-
+        
         tabBarController?.tabBar.items?.forEach { $0.isEnabled = true }
         tabBarController?.selectedIndex = 1
         

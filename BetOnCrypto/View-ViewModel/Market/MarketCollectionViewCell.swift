@@ -28,7 +28,7 @@ class MarketCollectionViewCell: UICollectionViewCell {
     let listRegularFormat = CollectionListRegularForm()
     
     let coinLabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.font = .boldSystemFont(ofSize: 12)
         return label
     }()

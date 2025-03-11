@@ -41,7 +41,7 @@ extension TrendingDataRepository {
     private func convertOriginToPresentableCoin(originalData: [TrendingCoinItem]) -> [TrendingCoinPresentable] {
         let converted = originalData.map {
             let coinDetail = $0.item
-
+            
             let percetageKRW = coinDetail.data.priceChangePercentage24h["krw"]!
             
             return TrendingCoinPresentable(

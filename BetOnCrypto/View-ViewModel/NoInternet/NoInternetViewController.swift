@@ -58,14 +58,14 @@ final class NoInternetViewController : BaseViewController {
 extension NoInternetViewController {
     private func createSpinnerView() {
         let child = SpinnerViewController()
-
-         addChild(child)
-         child.view.frame = view.frame
-         view.addSubview(child.view)
-         child.didMove(toParent: self)
+        
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
         
         self.childVC = child
-
+        
     }
     
     private func deleteSpinnerView() {

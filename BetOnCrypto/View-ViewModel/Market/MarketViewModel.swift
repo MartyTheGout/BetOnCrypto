@@ -104,10 +104,10 @@ final class MarketViewModel {
             let currentSortingCriteria = sortingRelay.value
             
             //For testing
-//            owner.dataRepository.getTickerMock { data in
-//                let sorted = owner.getSortedMarketData(with: currentSortingCriteria, on: data)
-//                marketDataRelay.accept(sorted)
-//            }
+            //            owner.dataRepository.getTickerMock { data in
+            //                let sorted = owner.getSortedMarketData(with: currentSortingCriteria, on: data)
+            //                marketDataRelay.accept(sorted)
+            //            }
             
             owner.dataRepository.getTickerData { data in
                 let sorted = owner.getSortedMarketData(with: currentSortingCriteria, on: data)

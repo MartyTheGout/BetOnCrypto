@@ -50,7 +50,7 @@ final class CoinSearchResultViewCell: UICollectionViewCell {
     }()
     
     private let rankingContainerView = {
-       let view = UIView()
+        let view = UIView()
         view.backgroundColor = DesignSystem.Color.Background.segment.inUIColor()
         return view
     }()
@@ -122,7 +122,7 @@ final class CoinSearchResultViewCell: UICollectionViewCell {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-
+        
         imageView.layer.cornerRadius = imageView.frame.height / 2
         imageView.layer.masksToBounds = true
         

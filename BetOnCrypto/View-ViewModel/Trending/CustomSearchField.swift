@@ -17,9 +17,9 @@ final class CustomSearchField : BaseView {
         textField.attributedPlaceholder = NSAttributedString(
             string: "검색어를 입력해주세요.",
             attributes: [
-            .foregroundColor : DesignSystem.Color.Tint.submain.inUIColor(),
-            .font: UIFont.systemFont(ofSize: 15)
-        ])
+                .foregroundColor : DesignSystem.Color.Tint.submain.inUIColor(),
+                .font: UIFont.systemFont(ofSize: 15)
+            ])
         return textField
     }()
     

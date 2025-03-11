@@ -44,7 +44,7 @@ extension MarketDataRepository {
     
     func covertCoinNameWithSlash(with coin: String) -> String {
         let splitted = coin.split(separator: "-")
-
+        
         guard splitted.count > 1 else {
             return coin
         }

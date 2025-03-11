@@ -52,13 +52,13 @@ final class MarketViewController : BaseViewController {
         let title = UILabel()
         title.text = "거래소"
         title.font = .boldSystemFont(ofSize: 17)
-
+        
         let spacer = UIView()
         let divider = Divider()
         
         let stack = UIStackView(arrangedSubviews: [title, spacer])
         stack.axis = .horizontal
-
+        
         stack.snp.makeConstraints {
             $0.width.greaterThanOrEqualTo(500).priority(.low)
         }
@@ -89,12 +89,12 @@ final class MarketViewController : BaseViewController {
         }.disposed(by: disposeBag)
         
         output.marketDataSeq.filter { !$0.isEmpty }.asObservable().take(1)
-//            .do(onDispose: {
-//                    print("Subscription disposed!")
-//                }) // possible to use 'do' to check whether dispose work has completely done.
+        //            .do(onDispose: {
+        //                    print("Subscription disposed!")
+        //                }) // possible to use 'do' to check whether dispose work has completely done.
             .bind(with: self) { owner, value in
-            owner.deleteSpinnerView()
-        }.disposed(by: disposeBag)
+                owner.deleteSpinnerView()
+            }.disposed(by: disposeBag)
         
         output.sortingOptionSeq.drive(with: self) { owner, value in
             owner.mainView.header.applyChangedSortingData(with: value)
@@ -103,7 +103,7 @@ final class MarketViewController : BaseViewController {
         output.errorMessageSeq.drive(with: self ) { owner, value in
             owner.showErrorToast(message: value)
         }.disposed(by: disposeBag)
-
+        
     }
 }
 
@@ -111,11 +111,11 @@ final class MarketViewController : BaseViewController {
 extension MarketViewController {
     private func createSpinnerView() {
         let child = SpinnerViewController()
-
-         addChild(child)
-         child.view.frame = view.frame
-         view.addSubview(child.view)
-         child.didMove(toParent: self)
+        
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
         
         self.childVC = child
         
