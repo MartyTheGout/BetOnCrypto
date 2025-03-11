@@ -20,6 +20,8 @@ final class DetailViewController: BaseViewController {
     
     private let mainView = DetailView()
     
+    private var childVC : UIViewController?
+    
     private lazy var backBarButtonItem = {
         let button = UIBarButtonItem(image: DesignSystem.Icon.Info.back.toUIImage(), style: .plain, target: self, action: nil)
         button.tintColor = DesignSystem.Color.Tint.main.inUIColor()
@@ -60,6 +62,7 @@ final class DetailViewController: BaseViewController {
         super.viewDidLoad()
         configureNavigationBar()
         bind()
+        createSpinnerView()
     }
     
     func configureNavigationBar() {
@@ -100,6 +103,12 @@ final class DetailViewController: BaseViewController {
                 owner.mainView.applyData(with: coinDetail)
                 owner.reflectDataOnTitle(with: coinDetail)
             }
+        }.disposed(by: disposeBag)
+        
+        output.detailDataSeq.compactMap { detailData in
+            detailData
+        }.asObservable().take(1).bind(with: self) { owner, _ in
+            owner.deleteSpinnerView()
         }.disposed(by: disposeBag)
         
         backBarButtonItem.rx.tap.bind(with: self) { owner, _ in
@@ -151,5 +160,30 @@ extension DetailViewController {
     
     private func showInPrepareToastMessage() {
         mainView.makeToast("준비 중입니다.", duration: 0.65)
+    }
+}
+
+//MARK: - Activity Indicator
+extension DetailViewController {
+    private func createSpinnerView() {
+        let child = SpinnerViewController()
+        
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
+        
+        self.childVC = child
+    }
+    
+    private func deleteSpinnerView() {
+        guard let childVC else {
+            print("[MarketViewController] There is no childVC here")
+            return
+        }
+        
+        childVC.willMove(toParent: nil)
+        childVC.view.removeFromSuperview()
+        childVC.removeFromParent()
     }
 }
