@@ -105,6 +105,16 @@ final class DetailViewController: BaseViewController {
         backBarButtonItem.rx.tap.bind(with: self) { owner, _ in
             owner.navigateToBackViewController()
         }.disposed(by: disposeBag)
+        
+        likeButtonItem.rx.tap.withLatestFrom(output.detailDataSeq)
+            .compactMap { coinDetail in coinDetail }
+            .bind(with: self) { owner, value in
+            input.likeInputSeq.accept(DetailLike(id: value.id, name: value.name))
+        }.disposed(by: disposeBag)
+        
+        output.likeOutputSeq.drive(with: self) { owner, value in
+            owner.showLikeToastMessage(with: value)
+        }.disposed(by: disposeBag)
     }
 }
 
@@ -114,9 +124,20 @@ extension DetailViewController {
         
         titleImageView.kf.setImage(with: URL(string: data.image))
         titleImageView.layer.cornerRadius = titleImageView.frame.height / 2
+        
+        let likeSymbol = data.liked ?  DesignSystem.Icon.Input.star.fill() : DesignSystem.Icon.Input.star.toUIImage()
+        
+        likeButtonItem.image = likeSymbol
     }
     
     private func navigateToBackViewController() {
         navigationController?.popViewController(animated: true)
+    }
+}
+
+//MARK: - Toast Message
+extension DetailViewController {
+    private func showLikeToastMessage(with value : String) {
+        mainView.makeToast(value, duration: 0.65)
     }
 }
