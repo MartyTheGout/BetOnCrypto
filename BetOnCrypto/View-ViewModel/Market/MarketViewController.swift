@@ -15,6 +15,7 @@ final class MarketViewController : BaseViewController {
     
     private let viewModel = MarketViewModel()
     private let disposeBag = DisposeBag()
+    private let autoFetchRegistration = PublishRelay<Bool>()
     
     private let mainView = MarketView()
     private var childVC: UIViewController?
@@ -34,12 +35,17 @@ final class MarketViewController : BaseViewController {
         bind()
     }
     
+    // MarketView fetches data from external datasource, every 5 sec.
+    // when viewWillAppear called, 5 sec fetching-loop is registered
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        autoFetchRegistration.accept(true)
     }
     
+    // when viewWillDisappear called, 5 sec fetching-loop is de-registered
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        autoFetchRegistration.accept(false)
     }
     
     private func configureNavigationTitleView() {
@@ -71,7 +77,8 @@ final class MarketViewController : BaseViewController {
         let input = MarketViewModel.Input(
             currentPriceSortTab: mainView.header.currentPriceSortingButton.rx.tap,
             dayToDaySortTab: mainView.header.dayToDaySortingButton.rx.tap,
-            totalAmountSortTab: mainView.header.totalAmountSortingButton.rx.tap
+            totalAmountSortTab: mainView.header.totalAmountSortingButton.rx.tap,
+            autoFetchRegistration: autoFetchRegistration
         )
         
         let output = viewModel.transform(input)

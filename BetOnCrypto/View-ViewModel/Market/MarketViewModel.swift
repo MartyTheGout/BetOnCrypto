@@ -66,11 +66,14 @@ final class MarketViewModel {
     
     private let disposeBag = DisposeBag()
     
+    private var fetchingFlag = true // for start/stop in designated queue's infinit 5 sec work
+    
     struct Input {
         let fetchDataRequest : BehaviorRelay<Void> = BehaviorRelay(value: ()) //For refetching data
         let currentPriceSortTab : ControlEvent<Void>
         let dayToDaySortTab : ControlEvent<Void>
         let totalAmountSortTab : ControlEvent<Void>
+        let autoFetchRegistration : PublishRelay<Bool>
     }
     
     struct Output {
@@ -89,7 +92,13 @@ final class MarketViewModel {
         let sortingRelay = BehaviorRelay(value: SortingCriteria.totalAmount(option: .none))
         let errorMessageRelay = PublishRelay<String>()
         
-        registerFetchingQueue()
+        input.autoFetchRegistration.bind(with: self) { owner, isOn in
+            if isOn {
+                owner.registerFetchingQueue()
+            } else {
+                owner.deRegisterFetchingQueue()
+            }
+        }.disposed(by: disposeBag)
         
         input.fetchDataRequest.bind(with: self) { owner, _ in
             let currentSortingCriteria = sortingRelay.value
@@ -147,12 +156,17 @@ final class MarketViewModel {
 
 extension MarketViewModel {
     private func registerFetchingQueue() {
-        designatedQueue.async {
-            while (true) {
-                self.fetchDataRequest?.accept(())
+        fetchingFlag = true
+        designatedQueue.async { [weak self] in
+            while (self?.fetchingFlag == true) {
+                self?.fetchDataRequest?.accept(())
                 sleep(5)
             }
         }
+    }
+    
+    private func deRegisterFetchingQueue() {
+        fetchingFlag = false
     }
     
     private func sortingHandler(
