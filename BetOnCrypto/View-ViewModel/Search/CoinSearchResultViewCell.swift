@@ -89,7 +89,7 @@ final class CoinSearchResultViewCell: UICollectionViewCell {
     private func configureViewConstraints() {
         imageView.snp.makeConstraints {
             $0.size.equalTo(36)
-            $0.top.bottom.leading.equalTo(contentView).offset(12)
+            $0.top.leading.equalTo(contentView).offset(12)
             $0.bottom.equalTo(contentView).offset(-12)
         }
         
