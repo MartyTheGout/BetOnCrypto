@@ -61,6 +61,13 @@ final class SearchViewModel {
         
         input.searchEnter.withLatestFrom(input.searchKeyword).distinctUntilChanged()
             .bind(with: self) { owner, value in
+                let trimmedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
+                
+                guard trimmedValue.count > 0 else {
+                    print("유효한 검색어가 아닙니다.")
+                    return
+                }
+                
                 activityIndicatrControlSeq.accept(true)
                 owner.repository.getCoinWithKeyword(keyword: value) { value in
                     let convertedOne = value.map { searchCoin in
