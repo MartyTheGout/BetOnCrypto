@@ -20,6 +20,15 @@ final class SearchViewController: BaseViewController {
     
     private var childVC: UIViewController?
     
+    private let noResultLabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 17)
+        label.textColor = DesignSystem.Color.Tint.main.inUIColor()
+        label.text = "검색어와 일치하는 코인이 없습니다.\n 다른 검색어를 입력해주세요."
+        label.numberOfLines = 0
+        return label
+    }()
+    
     init(keyword: String) {
         self.keyword = keyword
         super.init(nibName: nil, bundle: nil)
@@ -82,8 +91,15 @@ final class SearchViewController: BaseViewController {
         
         let output = viewModel.transform(input)
         
-        output.coinSearchResultSeq.drive() { _ in
+        output.coinSearchResultSeq.drive(with: self) { owner, value in
             output.activityIndicatrControlSeq.accept(false)
+            
+            if value.isEmpty {
+                owner.showNoResultLabel()
+            } else {
+                owner.deleteNoResultLabel()
+            }
+            
         }.disposed(by: disposeBag)
         
         output.coinSearchResultSeq.drive(mainView.coinSearchResultView.collectionView.rx.items(cellIdentifier: CoinSearchResultViewCell.id, cellType: CoinSearchResultViewCell.self)) { row, element, cell in
@@ -134,6 +150,19 @@ final class SearchViewController: BaseViewController {
 extension SearchViewController {
     private func triggerDataStream() {
         searchBar.searchTextField.sendActions(for: .editingDidEndOnExit)
+    }
+    
+    private func showNoResultLabel() {
+        mainView.coinSearchResultView.collectionView.addSubview(noResultLabel)
+        noResultLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+    }
+    
+    private func deleteNoResultLabel() {
+        if noResultLabel.superview != nil {
+            noResultLabel.removeFromSuperview()
+        }
     }
 }
 
