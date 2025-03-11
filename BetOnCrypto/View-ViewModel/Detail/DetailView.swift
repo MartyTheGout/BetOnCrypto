@@ -356,7 +356,7 @@ extension DetailView {
         lineChartDataSet.gradientPositions = [0.0, 1.0]
         
         lineChartDataSet.colors = [DesignSystem.Color.InfoDeliver.negative.inUIColor()]
-        lineChartDataSet.lineWidth = 2
+        lineChartDataSet.lineWidth = 3
         lineChartDataSet.mode = .cubicBezier
         lineChartDataSet.cubicIntensity = 0.2
         lineChartDataSet.drawCirclesEnabled = false
