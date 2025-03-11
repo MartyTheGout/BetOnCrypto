@@ -90,7 +90,6 @@ final class CoinDataRepository {
 }
 
 extension CoinDataRepository {
-    //TODO: need to fix , inserting 0.0 need to be fixed to just - 
     private func convertOriginalDetailToPresentable(original: CoinDetail) -> CoinDetailPresentable {
         return CoinDetailPresentable(
             id: original.id,
@@ -98,7 +97,7 @@ extension CoinDataRepository {
             name: original.name,
             image: original.image,
             currentPrice: convertDoubleToKRWString(original.currentPrice),
-            priceChangePercentage24h: convertPercentageInFormat(original.priceChangePercentage24h ?? 0.0) ,
+            priceChangePercentage24h: convertPercentageInFormat(original.priceChangePercentage24h!/100) ,
             marketCap: convertDoubleToKRWString(original.marketCap),
             fullyDilutedValuation: convertDoubleToKRWString(original.fullyDilutedValuation ?? 0.0),
             totalVolume: convertDoubleToKRWString(original.totalVolume),
