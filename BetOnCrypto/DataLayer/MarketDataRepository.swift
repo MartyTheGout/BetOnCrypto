@@ -11,15 +11,21 @@ import Alamofire
 
 
 final class MarketDataRepository {
-    func getTickerData(dataFeeder : @escaping (_ with: [MarketPresentable]) -> Void) {
-        NetworkManager.shared.callRequest(ExchangeRouter.ticker) { [weak self] (result: Result<[MarketData], AFError>) in
+    func getTickerData(
+        dataFeeder : @escaping (_ with: [MarketPresentable]) -> Void,
+        errorMessageFeeder : @escaping (String) -> Void
+    ) {
+        NetworkManager.shared.callRequest(ExchangeRouter.ticker) { [weak self] (result: Result<[MarketData], AFError>, statusCode: Int?) in
             switch result {
             case .success(let marketData) :
                 let convertedData: [MarketPresentable] = marketData.map {
                     self?.convertOriginToPresentable(with: $0) ?? MarketPresentable.mock
                 }
                 dataFeeder(convertedData)
-            case .failure(let error): print(error)
+            case .failure(let error):
+                print(error)
+                let definedErrorMessage = NetworkManager.shared.getErrorMessage(statusCode: statusCode)
+                errorMessageFeeder(definedErrorMessage)
             }
         }
     }

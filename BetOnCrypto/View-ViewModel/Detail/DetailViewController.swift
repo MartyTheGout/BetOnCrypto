@@ -132,6 +132,10 @@ final class DetailViewController: BaseViewController {
         mainView.seeMoreDetailButton.rx.tap.bind(with: self) { owner, _ in
             owner.showInPrepareToastMessage()
         }.disposed(by: disposeBag)
+        
+        output.errorMessageSeq.drive(with: self ) { owner, value in
+            owner.showErrorToast(message: value)
+        }.disposed(by: disposeBag)
     }
 }
 
@@ -149,17 +153,6 @@ extension DetailViewController {
     
     private func navigateToBackViewController() {
         navigationController?.popViewController(animated: true)
-    }
-}
-
-//MARK: - Toast Message
-extension DetailViewController {
-    private func showLikeToastMessage(with value : String) {
-        mainView.makeToast(value, duration: 0.65)
-    }
-    
-    private func showInPrepareToastMessage() {
-        mainView.makeToast("준비 중입니다.", duration: 0.65)
     }
 }
 
@@ -189,5 +182,26 @@ extension DetailViewController {
         childVC.removeFromParent()
 
         tabBarController?.tabBar.items?.forEach { $0.isEnabled = true }
+        tabBarController?.selectedIndex = 1
+        
+        DispatchQueue.main.async {
+            self.tabBarController?.tabBar.setNeedsLayout()
+            self.tabBarController?.tabBar.layoutIfNeeded()
+        }
+    }
+}
+
+//MARK: - Toast Message
+extension DetailViewController {
+    private func showLikeToastMessage(with value : String) {
+        mainView.makeToast(value, duration: 0.65)
+    }
+    
+    private func showInPrepareToastMessage() {
+        mainView.makeToast("준비 중입니다.", duration: 0.65)
+    }
+    
+    private func showErrorToast(message: String) {
+        mainView.makeToast(message, duration: 0.65, position: .top)
     }
 }

@@ -97,6 +97,10 @@ final class TrendingViewController : BaseViewController {
                 owner.navigateToSearchView(with: text)
             }
             .disposed(by: disposeBag)
+        
+        output.errorMessageSeq.drive(with: self ) { owner, value in
+            owner.showErrorToast(message: value)
+        }.disposed(by: disposeBag)
     }
 }
 
@@ -122,11 +126,11 @@ extension TrendingViewController {
 extension TrendingViewController {
     private func createSpinnerView() {
         let child = SpinnerViewController()
-
-         addChild(child)
-         child.view.frame = view.frame
-         view.addSubview(child.view)
-         child.didMove(toParent: self)
+        
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
         
         self.childVC = child
         
@@ -144,6 +148,18 @@ extension TrendingViewController {
         childVC.removeFromParent()
         
         tabBarController?.tabBar.items?.forEach { $0.isEnabled = true }
+        tabBarController?.selectedIndex = 1
+        
+        DispatchQueue.main.async {
+            self.tabBarController?.tabBar.setNeedsLayout()
+            self.tabBarController?.tabBar.layoutIfNeeded()
+        }
     }
 }
 
+//MARK: - Toast
+extension TrendingViewController {
+    private func showErrorToast(message: String) {
+        mainView.makeToast(message, duration: 0.65, position: .top)
+    }
+}

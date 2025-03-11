@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import Toast
 
 final class MarketViewController : BaseViewController {
     
@@ -92,10 +93,15 @@ final class MarketViewController : BaseViewController {
         output.sortingOptionSeq.drive(with: self) { owner, value in
             owner.mainView.header.applyChangedSortingData(with: value)
         }.disposed(by: disposeBag)
+        
+        output.errorMessageSeq.drive(with: self ) { owner, value in
+            owner.showErrorToast(message: value)
+        }.disposed(by: disposeBag)
 
     }
 }
 
+//MARK: - Activity Indicator
 extension MarketViewController {
     private func createSpinnerView() {
         let child = SpinnerViewController()
@@ -121,5 +127,18 @@ extension MarketViewController {
         childVC.removeFromParent()
         
         tabBarController?.tabBar.items?.forEach { $0.isEnabled = true }
+        tabBarController?.selectedIndex = 0
+        
+        DispatchQueue.main.async {
+            self.tabBarController?.tabBar.setNeedsLayout()
+            self.tabBarController?.tabBar.layoutIfNeeded()
+        }
+    }
+}
+
+//MARK: - Toast
+extension MarketViewController {
+    private func showErrorToast(message: String) {
+        mainView.makeToast(message, duration: 0.65, position: .top)
     }
 }

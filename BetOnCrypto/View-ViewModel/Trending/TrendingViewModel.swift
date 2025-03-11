@@ -47,6 +47,7 @@ final class TrendingViewModel {
     struct Output {
         let coinDataSeq: Driver<[TrendingCoinPresentable]>
         let nftDataSeq : Driver<[TrendingNFTPresentable]>
+        let errorMessageSeq: Driver<String>
     }
     
     private var fetchDataRequest: BehaviorRelay<Void>?
@@ -57,6 +58,8 @@ final class TrendingViewModel {
     func transform(_ input: Input) -> Output {
         
         self.fetchDataRequest = input.fetchDataRequest
+        
+        let errorMessageRelay = PublishRelay<String>()
         
         registerFetchingQueue()
         
@@ -69,12 +72,15 @@ final class TrendingViewModel {
             owner.dataRepository.getTrendingData { coinData, nftData in
                 owner.coinRelay.accept(coinData.suffix(14))
                 owner.nftRelay.accept(nftData.suffix(7))
+            } errorMessageFeeder: { errorMessage in
+                errorMessageRelay.accept(errorMessage)
             }
         }.disposed(by: disposeBag)
         
         return Output(
             coinDataSeq: coinRelay.asDriver(),
-            nftDataSeq: nftRelay.asDriver()
+            nftDataSeq: nftRelay.asDriver(),
+            errorMessageSeq: errorMessageRelay.asDriver(onErrorJustReturn: "")
         )
     }
 }

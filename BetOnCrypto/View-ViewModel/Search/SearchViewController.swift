@@ -119,6 +119,14 @@ final class SearchViewController: BaseViewController {
         backBarButtonItem.rx.tap.bind(with: self) { owner, _ in
             owner.navigateToBackViewController()
         }.disposed(by: disposeBag)
+        
+        input.searchEnter.bind(with: self) { owner, _ in
+            owner.searchBar.searchTextField.endEditing(true)
+        }.disposed(by: disposeBag)
+        
+        output.errorMessageSeq.drive(with: self ) { owner, value in
+            owner.showErrorToast(message: value)
+        }.disposed(by: disposeBag)
     }
 }
 
@@ -191,6 +199,12 @@ extension SearchViewController {
         childVC.removeFromParent()
         
         tabBarController?.tabBar.items?.forEach { $0.isEnabled = true }
+        tabBarController?.selectedIndex = 1
+        
+        DispatchQueue.main.async {
+            self.tabBarController?.tabBar.setNeedsLayout()
+            self.tabBarController?.tabBar.layoutIfNeeded()
+        }
     }
 }
 
@@ -199,5 +213,9 @@ extension SearchViewController {
 extension SearchViewController {
     private func showLikeToastMessage(with value : String) {
         mainView.makeToast(value, duration: 0.65)
+    }
+    
+    private func showErrorToast(message: String) {
+        mainView.makeToast(message, duration: 0.65, position: .top)
     }
 }

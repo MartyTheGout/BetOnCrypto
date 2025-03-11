@@ -76,6 +76,7 @@ final class MarketViewModel {
     struct Output {
         let marketDataSeq : Driver<[MarketPresentable]>
         let sortingOptionSeq: Driver<SortingCriteria>
+        let errorMessageSeq: Driver<String>
     }
     
     private var fetchDataRequest: BehaviorRelay<Void>?
@@ -86,6 +87,7 @@ final class MarketViewModel {
         
         let marketDataRelay: BehaviorRelay<[MarketPresentable]> = BehaviorRelay(value: [])
         let sortingRelay = BehaviorRelay(value: SortingCriteria.totalAmount(option: .none))
+        let errorMessageRelay = PublishRelay<String>()
         
         registerFetchingQueue()
         
@@ -101,6 +103,8 @@ final class MarketViewModel {
             owner.dataRepository.getTickerData { data in
                 let sorted = owner.getSortedMarketData(with: currentSortingCriteria, on: data)
                 marketDataRelay.accept(sorted)
+            } errorMessageFeeder: { error in
+                errorMessageRelay.accept(error)
             }
             
         }.disposed(by: disposeBag)
@@ -135,7 +139,8 @@ final class MarketViewModel {
         
         return Output(
             marketDataSeq: marketDataRelay.asDriver(),
-            sortingOptionSeq: sortingRelay.asDriver()
+            sortingOptionSeq: sortingRelay.asDriver(),
+            errorMessageSeq: errorMessageRelay.asDriver(onErrorJustReturn: "")
         )
     }
 }

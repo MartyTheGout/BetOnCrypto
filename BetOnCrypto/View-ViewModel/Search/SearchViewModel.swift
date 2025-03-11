@@ -44,6 +44,7 @@ final class SearchViewModel {
         let coinSearchResultSeq : Driver<[SearchCoinPresentable]>
         let activityIndicatrControlSeq: BehaviorRelay<Bool>
         let likeOutputSeq: Driver<String>
+        let errorMessageSeq: Driver<String>
     }
     
     func transform(_ input : Input) -> Output {
@@ -55,6 +56,8 @@ final class SearchViewModel {
         
         let likedDataSeq = BehaviorRelay<[String]>(value: [])
         makeRealmDataSeq(in: likedDataSeq)
+        
+        let errorMessageRelay = PublishRelay<String>()
         
         input.searchEnter.withLatestFrom(input.searchKeyword).distinctUntilChanged()
             .bind(with: self) { owner, value in
@@ -68,6 +71,8 @@ final class SearchViewModel {
                     }
                     
                     coinSearchResultRelay.accept(convertedOne)
+                } errorMessageFeeder: { errorMessage in
+                    errorMessageRelay.accept(errorMessage)
                 }
             }.disposed(by: disposeBag)
         
@@ -99,7 +104,8 @@ final class SearchViewModel {
         return Output(
             coinSearchResultSeq: coinSearchResultRelay.asDriver(),
             activityIndicatrControlSeq: activityIndicatrControlSeq,
-            likeOutputSeq: likeOutputRelay.asDriver(onErrorJustReturn: "'즐겨찾기' 에러가 발생했습니다. 담당자에게 문의해주세요.")
+            likeOutputSeq: likeOutputRelay.asDriver(onErrorJustReturn: "'즐겨찾기' 에러가 발생했습니다. 담당자에게 문의해주세요."),
+            errorMessageSeq: errorMessageRelay.asDriver(onErrorJustReturn: "")
         )
     }
 }

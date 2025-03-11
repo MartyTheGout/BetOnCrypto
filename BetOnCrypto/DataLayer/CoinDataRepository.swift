@@ -11,6 +11,7 @@ import Alamofire
 
 final class CoinDataRepository {
     
+    //MARK: - REALM
     private let realm = try! Realm()
     
     func printRepositorySandBox() {
@@ -45,16 +46,20 @@ final class CoinDataRepository {
         }
     }
     
-    //MARK: - Search
+    //MARK: - External Data Source: Search
     func getCoinWithKeyword(
         keyword: String,
-        dataFeeder : @escaping ([SearchCoin]) -> Void
+        dataFeeder : @escaping ([SearchCoin]) -> Void,
+        errorMessageFeeder: @escaping (String) -> Void
     ) {
-        NetworkManager.shared.callRequest(CoinAndNFTRouter.search(query: keyword)) {(result: Result<SearchResult, AFError>) in
+        NetworkManager.shared.callRequest(CoinAndNFTRouter.search(query: keyword)) {(result: Result<SearchResult, AFError>, statusCode: Int?) in
             switch result {
             case .success(let searchResult) :
                 dataFeeder(searchResult.coins)
-            case .failure(let error): print(error)
+            case .failure(let error):
+                print(error)
+                let definedErrorMessage = NetworkManager.shared.getErrorMessage(statusCode: statusCode)
+                errorMessageFeeder(definedErrorMessage)
             }
         }
     }
@@ -63,9 +68,13 @@ final class CoinDataRepository {
         dataFeeder(mockSearchCoin)
     }
     
-    //MARK: - Detail
-    func getCoinDetail(id: String, dataFeeder : @escaping (CoinDetailPresentable) -> Void ) {
-        NetworkManager.shared.callRequest(CoinAndNFTRouter.detail(id: id)) {[weak self] (result: Result<[CoinDetail], AFError>) in
+    //MARK: - External Data Source: Detail
+    func getCoinDetail(
+        id: String,
+        dataFeeder : @escaping (CoinDetailPresentable) -> Void,
+        errorMessageFeeder: @escaping (String) -> Void
+    ) {
+        NetworkManager.shared.callRequest(CoinAndNFTRouter.detail(id: id)) {[weak self] (result: Result<[CoinDetail], AFError>, statusCode: Int?) in
             switch result {
             case .success(let detailResult) :
                 guard let detailResult = detailResult.first else {
@@ -78,13 +87,14 @@ final class CoinDataRepository {
                 }
             case .failure(let error):
                 print(error)
+                let definedErrorMessage = NetworkManager.shared.getErrorMessage(statusCode: statusCode)
+                errorMessageFeeder(definedErrorMessage)
             }
         }
     }
     
     func getDetailMock(dataFeeder : @escaping (CoinDetailPresentable) -> Void ) {
         let converted = convertOriginalDetailToPresentable(original: mockCoinDetail)
-        
         dataFeeder(converted)
     }
 }

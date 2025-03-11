@@ -57,6 +57,7 @@ final class DetailViewModel {
     struct Output {
         let detailDataSeq: Driver<CoinDetailPresentable?>
         let likeOutputSeq: Driver<String>
+        let errorMessageSeq: Driver<String>
     }
     
     func transform(_ input : Input) -> Output {
@@ -65,6 +66,8 @@ final class DetailViewModel {
         
         let likedDataSeq = BehaviorRelay<[String]>(value: [])
         makeRealmDataSeq(in: likedDataSeq)
+        
+        let errorMessageRelay = PublishRelay<String>()
         
         likedDataSeq.distinctUntilChanged().bind { ids in
             let currentDetail = detailDataRelay.value
@@ -84,6 +87,8 @@ final class DetailViewModel {
             forLikeContainingDetail.liked = liked
             
             detailDataRelay.accept(forLikeContainingDetail)
+        } errorMessageFeeder: { errorMessage in
+            errorMessageRelay.accept(errorMessage)
         }
         
         input.likeInputSeq.bind(with: self) { owner, detailLike in
@@ -101,7 +106,8 @@ final class DetailViewModel {
         
         return Output(
             detailDataSeq: detailDataRelay.asDriver(),
-            likeOutputSeq: likeOutputRelay.asDriver(onErrorJustReturn: "'즐겨찾기' 에러가 발생했습니다. 담당자에게 문의해주세요.")
+            likeOutputSeq: likeOutputRelay.asDriver(onErrorJustReturn: "'즐겨찾기' 에러가 발생했습니다. 담당자에게 문의해주세요."),
+            errorMessageSeq: errorMessageRelay.asDriver(onErrorJustReturn: "")
         )
     }
 }
@@ -116,11 +122,9 @@ extension DetailViewModel {
             case .initial(let results) :
                 let array = Array(results)
                 relay.accept(array.map { $0.id })
-                print("Repository Observe : inital")
             case .update(let results, _, _, _) :
                 let array = Array(results)
                 relay.accept(array.map { $0.id })
-                print("Repository Observe : update")
             case .error(let error) :
                 print("[Error]repository observer failed", error)
             }
