@@ -98,13 +98,13 @@ class SortingButton : UIButton {
         }
         
         upsideImage.snp.makeConstraints {
-            $0.width.equalTo(5)
-            $0.height.equalTo(7) // TODO: Fix
+            $0.width.equalTo(7)
+            $0.height.equalTo(7.5)
         }
         
         downsideImage.snp.makeConstraints {
-            $0.width.equalTo(5)
-            $0.height.equalTo(7)
+            $0.width.equalTo(7)
+            $0.height.equalTo(7.5)
         }
         
         imageStack.snp.makeConstraints {
