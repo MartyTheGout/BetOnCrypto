@@ -129,6 +129,8 @@ extension TrendingViewController {
          child.didMove(toParent: self)
         
         self.childVC = child
+        
+        tabBarController?.tabBar.items?.forEach { $0.isEnabled = false }
     }
     
     private func deleteSpinnerView() {
@@ -140,6 +142,8 @@ extension TrendingViewController {
         childVC.willMove(toParent: nil)
         childVC.view.removeFromSuperview()
         childVC.removeFromParent()
+        
+        tabBarController?.tabBar.items?.forEach { $0.isEnabled = true }
     }
 }
 
