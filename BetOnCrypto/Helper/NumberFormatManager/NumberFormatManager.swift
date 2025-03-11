@@ -25,7 +25,7 @@ class NumberFormatManager {
     
     func getValueBasedOnMilion(originalValue: Double) -> String {
         let baseUnit = 1000000.0 // million
-        setMillionStyle()
+        setDecimalWithoutFDStyle()
         
         let millionConversion = originalValue / baseUnit
         
@@ -36,17 +36,45 @@ class NumberFormatManager {
         return numberFormatter.string(for: millionConversion)! + "백만"
     }
     
+    func getCurrentPriceStyle(originalValue : Double) -> String {
+        let baseUnit = 1000.0
+        
+        let thousandConversion = originalValue / baseUnit
+        
+        if thousandConversion < 1 {
+            setDecimalWithMax1FDStyle()
+            return numberFormatter.string(for: originalValue)!
+        }
+        
+        setDecimalWithoutFDStyle()
+        return numberFormatter.string(for: originalValue)!
+    }
+    
+    func setDefaultRoudingMode() {
+        numberFormatter.roundingMode = .halfUp
+    }
+    
     func setDecimalStyle() {
+        setDefaultRoudingMode()
         numberFormatter.numberStyle = .decimal
         numberFormatter.maximumFractionDigits = 2
     }
     
-    func setPercentageStyle() {
-        numberFormatter.numberStyle = .percent
+    func setDecimalWithMax1FDStyle() {
+        setDefaultRoudingMode()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = 1
+        numberFormatter.minimumFractionDigits = 1
     }
     
-    func setMillionStyle() {
+    func setDecimalWithoutFDStyle() {
+        setDefaultRoudingMode()
         numberFormatter.numberStyle = .decimal
         numberFormatter.maximumFractionDigits = 0
+    }
+    
+    func setPercentageStyle() {
+        setDefaultRoudingMode()
+        numberFormatter.numberStyle = .percent
     }
 }
