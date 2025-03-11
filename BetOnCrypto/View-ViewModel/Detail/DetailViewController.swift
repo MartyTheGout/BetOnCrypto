@@ -115,6 +115,14 @@ final class DetailViewController: BaseViewController {
         output.likeOutputSeq.drive(with: self) { owner, value in
             owner.showLikeToastMessage(with: value)
         }.disposed(by: disposeBag)
+        
+        mainView.seeMoreBasicButton.rx.tap.bind(with: self) { owner, _ in
+            owner.showInPrepareToastMessage()
+        }.disposed(by: disposeBag)
+        
+        mainView.seeMoreDetailButton.rx.tap.bind(with: self) { owner, _ in
+            owner.showInPrepareToastMessage()
+        }.disposed(by: disposeBag)
     }
 }
 
@@ -139,5 +147,9 @@ extension DetailViewController {
 extension DetailViewController {
     private func showLikeToastMessage(with value : String) {
         mainView.makeToast(value, duration: 0.65)
+    }
+    
+    private func showInPrepareToastMessage() {
+        mainView.makeToast("준비 중입니다.", duration: 0.65)
     }
 }

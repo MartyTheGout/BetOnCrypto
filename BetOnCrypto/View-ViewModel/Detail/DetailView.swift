@@ -34,7 +34,7 @@ final class DetailView: BaseView {
     }()
     
     private let basicInfoTitle = UILabel()
-    private let seeMoreBasicLabel = UILabel()
+    let seeMoreBasicButton = UIButton()
     private let basicInfoContainer = UIView()
     
     private let highPrice24hTitle = UILabel()
@@ -49,7 +49,7 @@ final class DetailView: BaseView {
     private let lowPriceAllTimeDate = UILabel()
     
     private let detailInfoTitle = UILabel()
-    private let seeMoreDetailLabel = UILabel()
+    let seeMoreDetailButton = UIButton()
     private let detailInfoContainer = UIView()
     
     private let capitalTitle = UILabel()
@@ -63,7 +63,7 @@ final class DetailView: BaseView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        [priceLabel, changeLabel, lineChartView, updateTimeStampLabel, basicInfoTitle, basicInfoContainer, seeMoreBasicLabel, detailInfoTitle, detailInfoContainer, seeMoreDetailLabel].forEach {
+        [priceLabel, changeLabel, lineChartView, updateTimeStampLabel, basicInfoTitle, basicInfoContainer, seeMoreBasicButton, detailInfoTitle, detailInfoContainer, seeMoreDetailButton].forEach {
             contentView.addSubview($0)
         }
         
@@ -111,8 +111,8 @@ final class DetailView: BaseView {
             $0.leading.equalTo(contentView).offset(16)
         }
         
-        seeMoreBasicLabel.snp.makeConstraints {
-            $0.top.equalTo(updateTimeStampLabel.snp.bottom).offset(16)
+        seeMoreBasicButton.snp.makeConstraints {
+            $0.centerY.equalTo(basicInfoTitle)
             $0.trailing.equalTo(contentView).offset(-16)
         }
         
@@ -176,8 +176,8 @@ final class DetailView: BaseView {
             $0.leading.equalTo(contentView).offset(16)
         }
         
-        seeMoreDetailLabel.snp.makeConstraints {
-            $0.top.equalTo(basicInfoContainer.snp.bottom).offset(16)
+        seeMoreDetailButton.snp.makeConstraints {
+            $0.centerY.equalTo(detailInfoTitle)
             $0.trailing.equalTo(contentView).offset(-16)
         }
         
@@ -321,8 +321,8 @@ extension DetailView {
         mutableAttributedString.append(attributedString)
         mutableAttributedString.append(chevronSymbol)
         
-        seeMoreBasicLabel.attributedText = mutableAttributedString
-        seeMoreDetailLabel.attributedText = mutableAttributedString
+        seeMoreDetailButton.setAttributedTitle(mutableAttributedString, for: .normal)
+        seeMoreBasicButton.setAttributedTitle(mutableAttributedString, for: .normal)
     }
     
     private func setChart(values: [Double]) {
