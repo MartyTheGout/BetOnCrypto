@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import Toast
 
 final class NoInternetViewController : BaseViewController {
     private let errorStream : BehaviorSubject<Bool>
@@ -44,15 +45,16 @@ final class NoInternetViewController : BaseViewController {
                 if value == false {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                         owner.deleteSpinnerView()
+                        owner.showNoInternetToastMessage()
                     }
                 }
             }.disposed(by: owner.disposeBag)
-            
         }
         .disposed(by: disposeBag)
     }
 }
 
+//MARK: - Activity Indicator
 extension NoInternetViewController {
     private func createSpinnerView() {
         let child = SpinnerViewController()
@@ -78,3 +80,9 @@ extension NoInternetViewController {
     }
 }
 
+//MARK: - Toast Message
+extension NoInternetViewController {
+    private func showNoInternetToastMessage() {
+        mainView.makeToast("네트워크 통신이 원활하지 않습니다.")
+    }
+}
