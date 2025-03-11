@@ -37,17 +37,19 @@ final class SearchViewModel {
     struct Input {
         let searchEnter : ControlEvent<Void>
         let searchKeyword : ControlProperty<String>
-        let likedInputSeq = PublishRelay<String>()
+        let likedInputSeq = PublishRelay<SearchCoinPresentable>()
     }
     
     struct Output {
         let coinSearchResultSeq : Driver<[SearchCoinPresentable]>
         let activityIndicatrControlSeq: BehaviorRelay<Bool>
+        let likeOutputSeq: Driver<String>
     }
     
     func transform(_ input : Input) -> Output {
         let coinSearchResultRelay : BehaviorRelay<[SearchCoinPresentable]> = BehaviorRelay(value: [])
         let activityIndicatrControlSeq: BehaviorRelay<Bool> = BehaviorRelay(value: true)
+        let likeOutputRelay = PublishRelay<String>()
         
         repository.printRepositorySandBox()// for debugging
         
@@ -84,17 +86,20 @@ final class SearchViewModel {
         }.disposed(by: disposeBag)
         
         input.likedInputSeq.bind(with: self) { owner, value in
-            if likedDataSeq.value.contains(value) {
-                owner.repository.deleteLikeRecords(of: LikedCoin(id: value)) //TODO: Syntax check
+            if likedDataSeq.value.contains(value.id) {
+                owner.repository.deleteLikeRecords(of: LikedCoin(id: value.id))
+                likeOutputRelay.accept("\(value.name)이 즐겨찾기에서 제거되었습니다.")
             }else {
-                owner.repository.addLikeRecords(of: LikedCoin(id: value))
+                owner.repository.addLikeRecords(of: LikedCoin(id: value.id))
+                likeOutputRelay.accept("\(value.name)이 즐겨찾기되었습니다.")
             }
             
         }.disposed(by: disposeBag)
         
         return Output(
             coinSearchResultSeq: coinSearchResultRelay.asDriver(),
-            activityIndicatrControlSeq: activityIndicatrControlSeq
+            activityIndicatrControlSeq: activityIndicatrControlSeq,
+            likeOutputSeq: likeOutputRelay.asDriver(onErrorJustReturn: "'즐겨찾기' 에러가 발생했습니다. 담당자에게 문의해주세요.")
         )
     }
 }

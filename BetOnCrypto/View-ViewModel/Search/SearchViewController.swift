@@ -9,15 +9,16 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import Toast
 
-class SearchViewController: BaseViewController {
+final class SearchViewController: BaseViewController {
     private var keyword : String
     
-    let viewModel = SearchViewModel()
+    private let viewModel = SearchViewModel()
     
-    let disposeBag = DisposeBag()
+    private let disposeBag = DisposeBag()
     
-    var childVC: UIViewController?
+    private var childVC: UIViewController?
     
     init(keyword: String) {
         self.keyword = keyword
@@ -88,16 +89,18 @@ class SearchViewController: BaseViewController {
         output.coinSearchResultSeq.drive(mainView.coinSearchResultView.collectionView.rx.items(cellIdentifier: CoinSearchResultViewCell.id, cellType: CoinSearchResultViewCell.self)) { row, element, cell in
             cell.applyData(with: element)
             
-            //TODO: Test Required
             cell.likeButton.rx.tap.bind {
-                print("like99 called", element.id)
-                input.likedInputSeq.accept(element.id)
+                input.likedInputSeq.accept(element)
             }.disposed(by: cell.disposeBag)
             
         }.disposed(by: disposeBag)
         
         mainView.coinSearchResultView.collectionView.rx.modelSelected(SearchCoinPresentable.self).bind(with: self) { owner, value in
             owner.navigateToDetailView(with: value.id)
+        }.disposed(by: disposeBag)
+        
+        output.likeOutputSeq.drive(with: self) { owner, value in
+            owner.showLikeToastMessage(with: value)
         }.disposed(by: disposeBag)
         
         output.activityIndicatrControlSeq.bind(with: self) { owner, value in
@@ -166,11 +169,11 @@ extension SearchViewController {
 extension SearchViewController {
     private func createSpinnerView() {
         let child = SpinnerViewController()
-
-         addChild(child)
-         child.view.frame = view.frame
-         view.addSubview(child.view)
-         child.didMove(toParent: self)
+        
+        addChild(child)
+        child.view.frame = view.frame
+        view.addSubview(child.view)
+        child.didMove(toParent: self)
         
         self.childVC = child
     }
@@ -184,5 +187,13 @@ extension SearchViewController {
         childVC.willMove(toParent: nil)
         childVC.view.removeFromSuperview()
         childVC.removeFromParent()
+    }
+}
+
+
+//MARK: - Toast Message
+extension SearchViewController {
+    private func showLikeToastMessage(with value : String) {
+        mainView.makeToast(value, duration: 0.65)
     }
 }
