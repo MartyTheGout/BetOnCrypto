@@ -79,7 +79,8 @@ final class TrendingView: BaseView {
     }
     
     override func configureViewDetails() {
-        //TODO: delete after collectionView data fetchable
+        backgroundColor = DesignSystem.Color.Background.main.inUIColor()
+        
         nftCollectionView.backgroundColor = DesignSystem.Color.Background.main.inUIColor()
         coinCollectionView.backgroundColor = DesignSystem.Color.Background.main.inUIColor()
     }

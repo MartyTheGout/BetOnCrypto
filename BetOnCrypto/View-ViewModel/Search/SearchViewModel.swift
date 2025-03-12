@@ -69,18 +69,17 @@ final class SearchViewModel {
                 }
                 
                 activityIndicatrControlSeq.accept(true)
+                
                 owner.repository.getCoinWithKeyword(keyword: value) { value in
                     let convertedOne = value.map { searchCoin in
-                        
                         let likedOrNot = likedDataSeq.value.contains(searchCoin.id)
-                        
                         return owner.convertOriginalToPresentable(of: searchCoin, likedOrNot: likedOrNot)
                     }
-                    
                     coinSearchResultRelay.accept(convertedOne)
                 } errorMessageFeeder: { errorMessage in
                     errorMessageRelay.accept(errorMessage)
                 }
+                
             }.disposed(by: disposeBag)
         
         likedDataSeq.bind(with: self) {owner, value in

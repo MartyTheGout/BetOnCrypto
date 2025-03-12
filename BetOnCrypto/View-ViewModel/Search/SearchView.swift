@@ -45,6 +45,8 @@ final class SearchView : BaseView {
     }
     
     override func configureViewDetails() {
+        backgroundColor = DesignSystem.Color.Background.main.inUIColor()
+        
         segmentedControl.setTitleTextAttributes([
             .foregroundColor: DesignSystem.Color.Tint.submain.inUIColor()
         ], for: .normal)

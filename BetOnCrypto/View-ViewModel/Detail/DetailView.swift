@@ -222,6 +222,8 @@ final class DetailView: BaseView {
     }
     
     override func configureViewDetails() {
+        backgroundColor = DesignSystem.Color.Background.main.inUIColor()
+        
         basicInfoTitle.text = "종목정보"
         detailInfoTitle.text = "투자지표"
         
