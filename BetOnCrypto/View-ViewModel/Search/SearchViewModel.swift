@@ -54,7 +54,7 @@ final class SearchViewModel {
         
         repository.printRepositorySandBox()// for debugging
         
-        let likedDataSeq = BehaviorRelay<[String]>(value: [])
+        let likedDataSeq = BehaviorRelay<Set<String>>(value: [])
         makeRealmDataSeq(in: likedDataSeq)
         
         let errorMessageRelay = PublishRelay<String>()
@@ -132,17 +132,17 @@ extension SearchViewModel {
 }
 
 extension SearchViewModel {
-    func makeRealmDataSeq(in relay : BehaviorRelay<[String]>) {
+    func makeRealmDataSeq(in relay : BehaviorRelay<Set<String>>) {
         let likedCoinRecords = repository.getLikeRecords()
         
         notificationToken = likedCoinRecords.observe { changes in
             switch changes {
             case .initial(let results):
-                let array = Array(results)
-                relay.accept(array.map { $0.id })
+                let set: Set<String> = Set(Array(results).map {$0.id})
+                relay.accept(set)
             case .update(let results, _, _, _) :
-                let array = Array(results)
-                relay.accept(array.map { $0.id })
+                let set: Set<String> = Set(Array(results).map {$0.id})
+                relay.accept(set)
             case .error(let error) :
                 print("[Error]repository observer failed", error)
             }
