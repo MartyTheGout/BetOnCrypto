@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class MarketCollectionViewCell: UICollectionViewCell {
+final class MarketCollectionViewCell: UICollectionViewCell {
     
     static var id : String {
         String(describing: self)

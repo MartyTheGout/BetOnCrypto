@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class LikedCoin: Object {
+final class LikedCoin: Object {
     @Persisted(primaryKey: true) var id : String // crypto currency's id
     
     convenience init(id: String) {

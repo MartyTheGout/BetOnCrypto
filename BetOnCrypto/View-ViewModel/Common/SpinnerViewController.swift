@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class SpinnerViewController : BaseViewController {
+final class SpinnerViewController : BaseViewController {
     private var spinner = {
         let indicator = UIActivityIndicatorView(style: .large)
         indicator.color = DesignSystem.Color.Tint.main.inUIColor()
