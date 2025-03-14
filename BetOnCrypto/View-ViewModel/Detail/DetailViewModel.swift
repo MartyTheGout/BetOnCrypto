@@ -64,7 +64,7 @@ final class DetailViewModel {
         let detailDataRelay = BehaviorRelay<CoinDetailPresentable?>(value: nil)
         let likeOutputRelay = PublishRelay<String>()
         
-        let likedDataSeq = BehaviorRelay<[String]>(value: [])
+        let likedDataSeq = BehaviorRelay<Set<String>>(value: [])
         makeRealmDataSeq(in: likedDataSeq)
         
         let errorMessageRelay = PublishRelay<String>()
@@ -113,18 +113,18 @@ final class DetailViewModel {
 }
 
 extension DetailViewModel {
-    private func makeRealmDataSeq(in relay: BehaviorRelay<[String]>) {
+    private func makeRealmDataSeq(in relay: BehaviorRelay<Set<String>>) {
         
         let likedCoinRecords = repository.getLikeRecords()
         
         notificationToken = likedCoinRecords.observe { changes in
             switch changes {
             case .initial(let results) :
-                let array = Array(results)
-                relay.accept(array.map { $0.id })
+                let array = Array(results).map { $0.id }
+                relay.accept(Set(array))
             case .update(let results, _, _, _) :
-                let array = Array(results)
-                relay.accept(array.map { $0.id })
+                let array = Array(results).map { $0.id }
+                relay.accept(Set(array))
             case .error(let error) :
                 print("[Error]repository observer failed", error)
             }
