@@ -82,23 +82,23 @@ final class SearchViewModel {
                 
                 // to-point-index : not set, but likedDataArray => O(n) + O(m), 시간 복잡도
                 
-//                let likedDataIndex = 0
+                //                let likedDataIndex = 0
                 
-//                owner.repository.getCoinWithKeyword(keyword: value) { value in
-//                    let convertedOne = value.map { searchCoin in
+                //                owner.repository.getCoinWithKeyword(keyword: value) { value in
+                //                    let convertedOne = value.map { searchCoin in
                 
-//                      while likedDataSeq[likedDataIndex] < searchCoin.id && likedDataIndex < likedDataSeq.count - 1 {
-//                         likedDataSeq += 1
-//                       }
+                //                      while likedDataSeq[likedDataIndex] < searchCoin.id && likedDataIndex < likedDataSeq.count - 1 {
+                //                         likedDataSeq += 1
+                //                       }
                 
-//                        let likedOrNot = searchCoin.id == likedDataSeq[likedDataIndex]
-//                        return owner.convertOriginalToPresentable(of: searchCoin, likedOrNot: likedOrNot)
-//                    }
-//                    coinSearchResultRelay.accept(convertedOne)
-//                } errorMessageFeeder: { errorMessage in
-//                    errorMessageRelay.accept(errorMessage)
-//                }
-            
+                //                        let likedOrNot = searchCoin.id == likedDataSeq[likedDataIndex]
+                //                        return owner.convertOriginalToPresentable(of: searchCoin, likedOrNot: likedOrNot)
+                //                    }
+                //                    coinSearchResultRelay.accept(convertedOne)
+                //                } errorMessageFeeder: { errorMessage in
+                //                    errorMessageRelay.accept(errorMessage)
+                //                }
+                
             }.disposed(by: disposeBag)
         
         likedDataSeq.bind(with: self) {owner, value in

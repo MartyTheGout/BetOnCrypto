@@ -8,8 +8,6 @@
 import Foundation
 import Alamofire
 
-
-
 final class MarketDataRepository {
     func getTickerData(
         dataFeeder : @escaping (_ with: [MarketPresentable]) -> Void,
