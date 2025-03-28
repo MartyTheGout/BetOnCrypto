@@ -93,7 +93,7 @@ final class CoinCollectionViewCell: UICollectionViewCell {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         coinImageView.layer.masksToBounds = true
-        coinImageView.layer.cornerRadius = coinImageView.frame.height / 2
+        coinImageView.layer.cornerRadius = 10
     }
 }
 

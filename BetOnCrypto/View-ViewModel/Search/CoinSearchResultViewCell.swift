@@ -74,7 +74,7 @@ final class CoinSearchResultViewCell: UICollectionViewCell {
     let likeButton = {
         let button = UIButton()
         button.setImage(DesignSystem.Icon.Input.star.toUIImage(), for: .normal)
-        button.tintColor = DesignSystem.Color.Tint.main.inUIColor()
+        button.tintColor = DesignSystem.Color.Renewal.tint.inUIColor()
         return button
     }()
     
@@ -123,7 +123,7 @@ final class CoinSearchResultViewCell: UICollectionViewCell {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         
-        imageView.layer.cornerRadius = imageView.frame.height / 2
+        imageView.layer.cornerRadius = 5
         imageView.layer.masksToBounds = true
         
         rankingContainerView.layer.cornerRadius = 5
@@ -148,6 +148,6 @@ extension CoinSearchResultViewCell {
     func applyLikedDataToButton(with liked: Bool) {
         let image = liked ? DesignSystem.Icon.Input.star.fill() : DesignSystem.Icon.Input.star.toUIImage()
         
-        likeButton.setImage(image, for: .normal)
+        likeButton.setImage(image.withTintColor(DesignSystem.Color.Renewal.tint.inUIColor(), renderingMode: .alwaysOriginal), for: .normal)
     }
 }

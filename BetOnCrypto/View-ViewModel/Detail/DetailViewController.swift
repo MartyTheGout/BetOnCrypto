@@ -30,7 +30,7 @@ final class DetailViewController: BaseViewController {
     
     private lazy var likeButtonItem = {
         let button = UIBarButtonItem(image: DesignSystem.Icon.Input.star.toUIImage(), style: .plain, target: self, action: nil)
-        button.tintColor = DesignSystem.Color.Tint.main.inUIColor()
+        button.tintColor = DesignSystem.Color.Renewal.tint.inUIColor()
         return button
     }()
     
@@ -144,7 +144,7 @@ extension DetailViewController {
         titleLabel.text = data.symbol.uppercased()
         
         titleImageView.kf.setImage(with: URL(string: data.image))
-        titleImageView.layer.cornerRadius = titleImageView.frame.height / 2
+        titleImageView.layer.cornerRadius = 10
         
         let likeSymbol = data.liked ?  DesignSystem.Icon.Input.star.fill() : DesignSystem.Icon.Input.star.toUIImage()
         
@@ -198,7 +198,7 @@ extension DetailViewController {
     }
     
     private func showInPrepareToastMessage() {
-        mainView.makeToast("준비 중입니다.", duration: 0.65)
+        mainView.makeToast("준비 중입니다.", duration: 0.65, position: .center)
     }
     
     private func showErrorToast(message: String) {

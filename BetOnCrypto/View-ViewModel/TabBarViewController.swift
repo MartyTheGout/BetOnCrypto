@@ -10,11 +10,12 @@ import UIKit
 final class TabBarViewController: UITabBarController {
     
     let unselectedColor = DesignSystem.Color.Background.segment.inUIColor()
-    let selectedColor = DesignSystem.Color.Tint.main.inUIColor()
+    let selectedColor = DesignSystem.Color.Renewal.tint.inUIColor()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureViewControllers()
+        configureTabBarAppearance()
         
         tabBar.tintColor = selectedColor
     }
@@ -23,18 +24,51 @@ final class TabBarViewController: UITabBarController {
         
         let marketVCSymbol = DesignSystem.Icon.Info.exchange.toUIImage().withTintColor(unselectedColor)
         let mainNC = UINavigationController(rootViewController: MarketViewController())
-        mainNC.tabBarItem = UITabBarItem(title: "거래소", image: marketVCSymbol, tag: 0)
+        mainNC.tabBarItem = UITabBarItem(title: "", image: marketVCSymbol, tag: 0)
         
         let searchVCSymbol = DesignSystem.Icon.Info.coinAndNft.toUIImage().withTintColor(unselectedColor)
         let searchNC = UINavigationController(rootViewController: TrendingViewController())
-        searchNC.tabBarItem = UITabBarItem(title: "코인정보", image: searchVCSymbol, tag: 1)
+        searchNC.tabBarItem = UITabBarItem(title: "", image: searchVCSymbol, tag: 1)
         
-        let portfolioVCSymbol = DesignSystem.Icon.Input.star.toUIImage().withTintColor(unselectedColor)
-        let portfolioVC = PortfolioViewController()
-        portfolioVC.tabBarItem = UITabBarItem(title: "포트폴리오", image: portfolioVCSymbol, tag: 2)
-        
-        setViewControllers([mainNC, searchNC, portfolioVC], animated: true)
+        setViewControllers([mainNC, searchNC], animated: true)
     }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        let inset: CGFloat = 16
+        let height: CGFloat = 60
+        let tabFrame = CGRect(
+            x: inset,
+            y: view.bounds.height - height - view.safeAreaInsets.bottom - 10,
+            width: view.bounds.width - (inset * 2),
+            height: height
+        )
+
+        tabBar.frame = tabFrame
+        tabBar.layer.cornerRadius = 24
+        tabBar.layer.masksToBounds = true
+        tabBar.layer.borderWidth = 0
+    }
+    
+    private func configureTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+
+        // 블러 효과 + 반투명 백그라운드 (dock 느낌)
+        appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+        appearance.backgroundColor = UIColor.white.withAlphaComponent(0.05)
+        
+        // 그림자 제거
+        appearance.shadowImage = nil
+        appearance.shadowColor = nil
+        
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
+    }
+    
+    
+    
 }
 
 extension TabBarViewController: UITabBarControllerDelegate {}

@@ -85,7 +85,7 @@ final class NFTCollectionViewCell : UICollectionViewCell {
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
-        nftImage.layer.cornerRadius = nftImage.frame.height / 3
+        nftImage.layer.cornerRadius = 10
         nftImage.layer.masksToBounds = true
     }
 }

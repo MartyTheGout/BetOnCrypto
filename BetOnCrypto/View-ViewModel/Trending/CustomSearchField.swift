@@ -25,7 +25,7 @@ final class CustomSearchField : BaseView {
     
     private let searchImage = {
         let imageView = UIImageView()
-        imageView.image = DesignSystem.Icon.Input.search.toUIImage()
+        imageView.image = DesignSystem.Icon.Input.search.toUIImage().withTintColor(DesignSystem.Color.Renewal.tint.inUIColor())
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -59,8 +59,8 @@ final class CustomSearchField : BaseView {
     
     override func configureViewDetails() {
         
-        containerView.layer.borderWidth = 1
-        containerView.layer.borderColor = DesignSystem.Color.Tint.submain.inUIColor().cgColor
+        containerView.layer.borderWidth = 3
+        containerView.layer.borderColor = DesignSystem.Color.Renewal.tint.inUIColor().cgColor
         
         searchImage.tintColor = DesignSystem.Color.Tint.submain.inUIColor()
     }
@@ -69,7 +69,7 @@ final class CustomSearchField : BaseView {
         super.layoutSubviews()
         
         containerView.layer.masksToBounds = true
-        containerView.layer.cornerRadius = containerView.frame.height / 2
+        containerView.layer.cornerRadius = layer.frame.height / 2
         
     }
 }

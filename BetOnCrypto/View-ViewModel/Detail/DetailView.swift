@@ -33,6 +33,11 @@ final class DetailView: BaseView {
         return label
     }()
     
+    private let basicTitleContainer = {
+        let view = UIView()
+        view.backgroundColor = DesignSystem.Color.Renewal.tint.inUIColor()
+        return view
+    }()
     private let basicInfoTitle = UILabel()
     let seeMoreBasicButton = UIButton()
     private let basicInfoContainer = UIView()
@@ -48,6 +53,11 @@ final class DetailView: BaseView {
     private let lowPriceAllTimeValue = UILabel()
     private let lowPriceAllTimeDate = UILabel()
     
+    private let detailTitleContainer = {
+        let view = UIView()
+        view.backgroundColor = DesignSystem.Color.Renewal.tint.inUIColor()
+        return view
+    }()
     private let detailInfoTitle = UILabel()
     let seeMoreDetailButton = UIButton()
     private let detailInfoContainer = UIView()
@@ -63,9 +73,14 @@ final class DetailView: BaseView {
         addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        [priceLabel, changeLabel, lineChartView, updateTimeStampLabel, basicInfoTitle, basicInfoContainer, seeMoreBasicButton, detailInfoTitle, detailInfoContainer, seeMoreDetailButton].forEach {
+        [priceLabel, changeLabel, lineChartView, updateTimeStampLabel, basicTitleContainer, basicInfoContainer, detailTitleContainer, detailInfoContainer].forEach {
             contentView.addSubview($0)
         }
+        
+        basicTitleContainer.addSubview(basicInfoTitle)
+        basicTitleContainer.addSubview(seeMoreBasicButton)
+        detailTitleContainer.addSubview(detailInfoTitle)
+        detailTitleContainer.addSubview(seeMoreDetailButton)
         
         [highPrice24hTitle, highPrice24hValue, lowPrice24hTitle, lowPrice24hValue, highPriceAllTimeTitle, highPriceAllTimeValue, highPriceAllTimeDate, lowPriceAllTimeTitle, lowPriceAllTimeValue, lowPriceAllTimeDate].forEach {
             basicInfoContainer.addSubview($0)
@@ -106,19 +121,26 @@ final class DetailView: BaseView {
             $0.leading.equalTo(contentView).offset(16)
         }
         
-        basicInfoTitle.snp.makeConstraints {
+        basicTitleContainer.snp.makeConstraints {
             $0.top.equalTo(updateTimeStampLabel.snp.bottom).offset(16)
-            $0.leading.equalTo(contentView).offset(16)
+            $0.leading.equalTo(contentView)
+        }
+        
+        basicInfoTitle.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview().inset(6)
+            $0.leading.equalToSuperview().offset(16)
         }
         
         seeMoreBasicButton.snp.makeConstraints {
             $0.centerY.equalTo(basicInfoTitle)
-            $0.trailing.equalTo(contentView).offset(-16)
+            $0.leading.equalTo(basicInfoTitle.snp.trailing).offset(40)
+            $0.trailing.equalToSuperview().offset(-16)
         }
         
         basicInfoContainer.snp.makeConstraints {
-            $0.horizontalEdges.equalTo(contentView).inset(16)
             $0.top.equalTo(basicInfoTitle.snp.bottom).offset(16)
+            $0.leading.equalTo(contentView).offset(32)
+            $0.trailing.equalTo(contentView)
         }
         
         highPrice24hTitle.snp.makeConstraints {
@@ -171,19 +193,26 @@ final class DetailView: BaseView {
             $0.leading.equalTo(basicInfoContainer.snp.centerX).offset(16)
         }
         
-        detailInfoTitle.snp.makeConstraints {
+        detailTitleContainer.snp.makeConstraints {
             $0.top.equalTo(basicInfoContainer.snp.bottom).offset(16)
-            $0.leading.equalTo(contentView).offset(16)
+            $0.leading.equalTo(contentView)
+        }
+        
+        detailInfoTitle.snp.makeConstraints {
+            $0.verticalEdges.equalToSuperview().inset(6)
+            $0.leading.equalToSuperview().offset(16)
         }
         
         seeMoreDetailButton.snp.makeConstraints {
             $0.centerY.equalTo(detailInfoTitle)
-            $0.trailing.equalTo(contentView).offset(-16)
+            $0.leading.equalTo(detailInfoTitle.snp.trailing).offset(40)
+            $0.trailing.equalToSuperview().offset(-16)
         }
         
         detailInfoContainer.snp.makeConstraints {
             $0.top.equalTo(detailInfoTitle.snp.bottom).offset(16)
-            $0.horizontalEdges.equalTo(contentView).inset(16)
+            $0.leading.equalTo(contentView).offset(32)
+            $0.trailing.equalTo(contentView)
         }
         
         capitalTitle.snp.makeConstraints {
@@ -224,11 +253,11 @@ final class DetailView: BaseView {
     override func configureViewDetails() {
         backgroundColor = DesignSystem.Color.Background.main.inUIColor()
         
-        basicInfoTitle.text = "종목정보"
-        detailInfoTitle.text = "투자지표"
+        basicInfoTitle.text = "가격 정보"
+        detailInfoTitle.text = "재무 관련"
         
         [basicInfoTitle, detailInfoTitle].forEach {
-            $0.textColor = DesignSystem.Color.Tint.main.inUIColor()
+            $0.textColor = DesignSystem.Color.Background.main.inUIColor()
             $0.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         }
         
@@ -262,6 +291,11 @@ final class DetailView: BaseView {
             $0.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         }
         
+        basicInfoContainer.layer.cornerRadius = 10
+        basicInfoContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        
+        detailInfoContainer.layer.cornerRadius = 10
+        detailInfoContainer.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
     }
     
     override func draw(_ rect: CGRect) {
@@ -271,6 +305,14 @@ final class DetailView: BaseView {
         
         detailInfoContainer.layer.cornerRadius = 20
         detailInfoContainer.layer.masksToBounds = true
+        
+        basicTitleContainer.layer.cornerRadius = basicTitleContainer.frame.height / 2
+        basicTitleContainer.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        basicTitleContainer.layer.masksToBounds = true
+        
+        detailTitleContainer.layer.cornerRadius = detailTitleContainer.frame.height / 2
+        detailTitleContainer.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        detailTitleContainer.layer.masksToBounds = true
     }
 }
 
@@ -304,19 +346,19 @@ extension DetailView {
     
     private func setAttributedTextOnSeeMoreLabel() {
         
-        let color = DesignSystem.Color.Tint.submain.inUIColor()
+        let color = DesignSystem.Color.Renewal.subTint.inUIColor()
         let symbol = DesignSystem.Icon.Input.detail.toUIImage()
         
         let mutableAttributedString = NSMutableAttributedString(string: "")
         
         let attributedString = NSAttributedString(string: "더보기" , attributes: [
             .foregroundColor : color,
-            .font : UIFont.boldSystemFont(ofSize: 15)
+            .font : UIFont.boldSystemFont(ofSize: 13)
         ])
         
         let chevronSymbolAttachment = NSTextAttachment()
         chevronSymbolAttachment.image = symbol.withTintColor(color)
-        chevronSymbolAttachment.bounds = CGRect(x: 0, y: 0, width: 13, height: 13)
+        chevronSymbolAttachment.bounds = CGRect(x: 0, y: 0, width: 11, height: 11)
         
         let chevronSymbol = NSMutableAttributedString(attachment: chevronSymbolAttachment)
         
@@ -340,7 +382,7 @@ extension DetailView {
         lineChartDataSet.label = nil
         
         lineChartDataSet.drawValuesEnabled = false
-        let color = DesignSystem.Color.InfoDeliver.negative.inUIColor()
+        let color = DesignSystem.Color.Renewal.tint.inUIColor()
         
         let gradientColors = [
             color.cgColor,
@@ -357,7 +399,7 @@ extension DetailView {
         lineChartDataSet.isDrawLineWithGradientEnabled = true
         lineChartDataSet.gradientPositions = [0.0, 1.0]
         
-        lineChartDataSet.colors = [DesignSystem.Color.InfoDeliver.negative.inUIColor()]
+        lineChartDataSet.colors = [DesignSystem.Color.Renewal.tint.inUIColor()]
         lineChartDataSet.lineWidth = 3
         lineChartDataSet.mode = .cubicBezier
         lineChartDataSet.cubicIntensity = 0.2

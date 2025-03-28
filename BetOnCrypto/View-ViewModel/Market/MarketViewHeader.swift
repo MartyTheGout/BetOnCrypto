@@ -18,6 +18,7 @@ final class MarketHeader: BaseView {
         label.font = .systemFont(ofSize: 12, weight: .black)
         label.text = "코인"
         label.textAlignment = .left
+        label.textColor = DesignSystem.Color.Background.main.inUIColor()
         return label
     }()
     
@@ -58,7 +59,8 @@ final class MarketHeader: BaseView {
     }
     
     override func configureViewDetails() {
-        backgroundColor = DesignSystem.Color.Background.segment.inUIColor()
+//        backgroundColor = DesignSystem.Color.Background.segment.inUIColor()
+        backgroundColor = DesignSystem.Color.Renewal.tint.inUIColor()
     }
     
     func applyChangedSortingData(with sortingData: SortingCriteria) {

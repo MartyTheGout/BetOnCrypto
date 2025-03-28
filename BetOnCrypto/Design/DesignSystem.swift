@@ -27,6 +27,19 @@ enum DesignSystem {
             }
         }
         
+        enum Renewal : String {
+            case tint = "8B5CF6"
+            case subTint = "D8B4FE"
+            
+            case mainText = "1E1B2E"
+            case subText = "2A253C"
+            
+            func inUIColor() -> UIColor {
+                return UIColor(hex: self.rawValue)
+            }
+            
+        }
+        
         enum InfoDeliver : String {
             case positive = "F04452"
             case negative = "3182F6"
@@ -51,7 +64,7 @@ enum DesignSystem {
         enum Input : String {
             case search = "magnifyingglass"
             case detail = "chevron.right"
-            case star = "star"
+            case star = "book"
             case ascendent = "arrowtriangle.up"
             case descendent = "arrowtriangle.down"
             

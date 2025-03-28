@@ -10,7 +10,7 @@ import UIKit
 class SortingButton : UIButton {
     
     let unselectedColor = DesignSystem.Color.Tint.submain.inUIColor()
-    let selectedColor = DesignSystem.Color.Tint.main.inUIColor()
+    let selectedColor = DesignSystem.Color.Background.main.inUIColor()
     
     let containerStack = {
         let stack = UIStackView()
@@ -23,6 +23,7 @@ class SortingButton : UIButton {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 12, weight: .black)
         label.textAlignment = .right
+        label.textColor = DesignSystem.Color.Background.main.inUIColor()
         return label
     }()
     
@@ -47,7 +48,7 @@ class SortingButton : UIButton {
     
     lazy var downsideImage = {
         let imageView = UIImageView()
-        imageView.image = DesignSystem.Icon.Input.descendent.fill() // TODO: why withTintColor 는 작동하지 않는가?
+        imageView.image = DesignSystem.Icon.Input.descendent.fill() 
         imageView.contentMode = .scaleAspectFill
         imageView.tintColor = unselectedColor
         return imageView

@@ -37,8 +37,8 @@ final class TrendingViewController : BaseViewController {
     
     private func configureNavigationTitleView() {
         let title = UILabel()
-        title.text = "가상자산 / 심볼검색"
-        title.font = .boldSystemFont(ofSize: 17)
+        title.text = "Trending"
+        title.font = .boldSystemFont(ofSize: 21)
         
         let spacer = UIView()
         let divider = Divider()

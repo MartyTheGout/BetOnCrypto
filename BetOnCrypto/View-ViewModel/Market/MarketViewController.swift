@@ -50,8 +50,8 @@ final class MarketViewController : BaseViewController {
     
     private func configureNavigationTitleView() {
         let title = UILabel()
-        title.text = "거래소"
-        title.font = .boldSystemFont(ofSize: 17)
+        title.text = "Market"
+        title.font = .boldSystemFont(ofSize: 21)
         
         let spacer = UIView()
         let divider = Divider()
