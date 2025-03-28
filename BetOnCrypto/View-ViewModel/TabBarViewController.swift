@@ -22,15 +22,15 @@ final class TabBarViewController: UITabBarController {
     
     private func configureViewControllers() {
         
-        let marketVCSymbol = DesignSystem.Icon.Info.exchange.toUIImage().withTintColor(unselectedColor)
-        let mainNC = UINavigationController(rootViewController: MarketViewController())
-        mainNC.tabBarItem = UITabBarItem(title: "", image: marketVCSymbol, tag: 0)
-        
         let searchVCSymbol = DesignSystem.Icon.Info.coinAndNft.toUIImage().withTintColor(unselectedColor)
         let searchNC = UINavigationController(rootViewController: TrendingViewController())
         searchNC.tabBarItem = UITabBarItem(title: "", image: searchVCSymbol, tag: 1)
         
-        setViewControllers([mainNC, searchNC], animated: true)
+        let marketVCSymbol = DesignSystem.Icon.Info.exchange.toUIImage().withTintColor(unselectedColor)
+        let mainNC = UINavigationController(rootViewController: MarketViewController())
+        mainNC.tabBarItem = UITabBarItem(title: "", image: marketVCSymbol, tag: 0)
+        
+        setViewControllers([searchNC, mainNC], animated: true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -66,9 +66,6 @@ final class TabBarViewController: UITabBarController {
         tabBar.standardAppearance = appearance
         tabBar.scrollEdgeAppearance = appearance
     }
-    
-    
-    
 }
 
 extension TabBarViewController: UITabBarControllerDelegate {}

@@ -221,7 +221,7 @@ final class DetailView: BaseView {
         
         capitalValue.snp.makeConstraints {
             $0.top.equalTo(capitalTitle.snp.bottom).offset(8)
-            $0.leading.equalTo(detailInfoContainer).offset(16)
+            $0.trailing.equalTo(detailInfoContainer).offset(-16)
         }
         
         fDVTitle.snp.makeConstraints {
@@ -231,7 +231,7 @@ final class DetailView: BaseView {
         
         fDVValue.snp.makeConstraints {
             $0.top.equalTo(fDVTitle.snp.bottom).offset(8)
-            $0.leading.equalTo(detailInfoContainer).offset(16)
+            $0.trailing.equalTo(detailInfoContainer).offset(-16)
         }
         
         volumnTitle.snp.makeConstraints {
@@ -241,7 +241,7 @@ final class DetailView: BaseView {
         
         volumnValue.snp.makeConstraints {
             $0.top.equalTo(volumnTitle.snp.bottom).offset(8)
-            $0.leading.equalTo(detailInfoContainer).offset(16)
+            $0.trailing.equalTo(detailInfoContainer).offset(-16)
             $0.bottom.equalTo(detailInfoContainer).offset(-16)
         }
         
