@@ -2,6 +2,10 @@
 
 ## 소개
 NFT와 암호화폐의 정보를 제공하는 앱, Trend Checker입니다. 현재 주목을 받고 있는 NFT와 암호화폐의 정보를 제공하며, 암호화폐의 경우 종목에 따른 실시간 가격, 거래 대금, 전일 대비 상승률 등의 정보 또한 제공합니다.
+
+- 핵심 개발 기간: 2025.03.06 - 2025.03.11 
+- 인원 : 1명
+
 <img width="712" alt="image" src="https://github.com/user-attachments/assets/9be8cdc2-ecc5-448e-b042-d6462e59682a" />
 
 
