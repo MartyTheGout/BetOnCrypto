@@ -9,14 +9,14 @@ import Foundation
 
 struct MarketData: Codable {
     let market: String
-    let tradeDate: String
-    let tradeTime: String
-    let tradeDateKst: String
-    let tradeTimeKst: String
-    let tradeTimestamp: Int64
-    let openingPrice: Double
-    let highPrice: Double
-    let lowPrice: Double
+    let tradeDate: String?
+    let tradeTime: String?
+    let tradeDateKst: String?
+    let tradeTimeKst: String?
+    let tradeTimestamp: Int64?
+    let openingPrice: Double?
+    let highPrice: Double?
+    let lowPrice: Double?
     let tradePrice: Double
     let prevClosingPrice: Double
     let change: String
@@ -34,6 +34,63 @@ struct MarketData: Codable {
     let lowest52WeekPrice: Double
     let lowest52WeekDate: String
     let timestamp: Int64
+    
+    init(
+        market: String,
+        tradeDate: String,
+        tradeTime: String,
+        tradeDateKst: String,
+        tradeTimeKst: String,
+        tradeTimestamp: Int64,
+        openingPrice: Double,
+        highPrice: Double,
+        lowPrice: Double,
+        tradePrice: Double,
+        prevClosingPrice: Double,
+        change: String,
+        changePrice: Double,
+        changeRate: Double,
+        signedChangePrice: Double,
+        signedChangeRate: Double,
+        tradeVolume: Double,
+        accTradePrice: Double,
+        accTradePrice24h: Double,
+        accTradeVolume: Double,
+        accTradeVolume24h: Double,
+        highest52WeekPrice: Double,
+        highest52WeekDate: String,
+        lowest52WeekPrice: Double,
+        lowest52WeekDate: String,
+        timestamp: Int64
+    ) {
+        self.market = market
+        self.tradeDate = tradeDate
+        self.tradeTime = tradeTime
+        self.tradeDateKst = tradeDateKst
+        self.tradeTimeKst = tradeTimeKst
+        self.tradeTimestamp = tradeTimestamp
+        self.openingPrice = openingPrice
+        self.highPrice = highPrice
+        self.lowPrice = lowPrice
+        self.tradePrice = tradePrice
+        self.prevClosingPrice = prevClosingPrice
+        self.change = change
+        self.changePrice = changePrice
+        self.changeRate = changeRate
+        self.signedChangePrice = signedChangePrice
+        self.signedChangeRate = signedChangeRate
+        self.tradeVolume = tradeVolume
+        self.accTradePrice = accTradePrice
+        self.accTradePrice24h = accTradePrice24h
+        self.accTradeVolume = accTradeVolume
+        self.accTradeVolume24h = accTradeVolume24h
+        self.highest52WeekPrice = highest52WeekPrice
+        self.highest52WeekDate = highest52WeekDate
+        self.lowest52WeekPrice = lowest52WeekPrice
+        self.lowest52WeekDate = lowest52WeekDate
+        self.timestamp = timestamp
+    }
+    
     
     enum CodingKeys: String, CodingKey {
         case market
@@ -62,6 +119,43 @@ struct MarketData: Codable {
         case lowest52WeekPrice = "lowest_52_week_price"
         case lowest52WeekDate = "lowest_52_week_date"
         case timestamp
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        market = try container.decodeIfPresent(String.self, forKey: .market) ?? ""
+        tradeDate = try container.decodeIfPresent(String.self, forKey: .tradeDate) ?? ""
+        tradeTime = try container.decodeIfPresent(String.self, forKey: .tradeTime) ?? ""
+        tradeDateKst = try container.decodeIfPresent(String.self, forKey: .tradeDateKst) ?? ""
+        tradeTimeKst = try container.decodeIfPresent(String.self, forKey: .tradeTimeKst) ?? ""
+        
+        tradeTimestamp = try container.decodeIfPresent(Int64.self, forKey: .tradeTimestamp) ?? 0
+        timestamp = try container.decodeIfPresent(Int64.self, forKey: .timestamp) ?? 0
+        
+        openingPrice = try container.decodeIfPresent(Double.self, forKey: .openingPrice) ?? 0.0
+        highPrice = try container.decodeIfPresent(Double.self, forKey: .highPrice) ?? 0.0
+        lowPrice = try container.decodeIfPresent(Double.self, forKey: .lowPrice) ?? 0.0
+        tradePrice = try container.decodeIfPresent(Double.self, forKey: .tradePrice) ?? 0.0
+        prevClosingPrice = try container.decodeIfPresent(Double.self, forKey: .prevClosingPrice) ?? 0.0
+        
+        change = try container.decodeIfPresent(String.self, forKey: .change) ?? "EVEN"
+        
+        changePrice = try container.decodeIfPresent(Double.self, forKey: .changePrice) ?? 0.0
+        changeRate = try container.decodeIfPresent(Double.self, forKey: .changeRate) ?? 0.0
+        signedChangePrice = try container.decodeIfPresent(Double.self, forKey: .signedChangePrice) ?? 0.0
+        signedChangeRate = try container.decodeIfPresent(Double.self, forKey: .signedChangeRate) ?? 0.0
+        
+        tradeVolume = try container.decodeIfPresent(Double.self, forKey: .tradeVolume) ?? 0.0
+        accTradePrice = try container.decodeIfPresent(Double.self, forKey: .accTradePrice) ?? 0.0
+        accTradePrice24h = try container.decodeIfPresent(Double.self, forKey: .accTradePrice24h) ?? 0.0
+        accTradeVolume = try container.decodeIfPresent(Double.self, forKey: .accTradeVolume) ?? 0.0
+        accTradeVolume24h = try container.decodeIfPresent(Double.self, forKey: .accTradeVolume24h) ?? 0.0
+        
+        highest52WeekPrice = try container.decodeIfPresent(Double.self, forKey: .highest52WeekPrice) ?? 0.0
+        highest52WeekDate = try container.decodeIfPresent(String.self, forKey: .highest52WeekDate) ?? ""
+        lowest52WeekPrice = try container.decodeIfPresent(Double.self, forKey: .lowest52WeekPrice) ?? 0.0
+        lowest52WeekDate = try container.decodeIfPresent(String.self, forKey: .lowest52WeekDate) ?? ""
     }
 }
 
