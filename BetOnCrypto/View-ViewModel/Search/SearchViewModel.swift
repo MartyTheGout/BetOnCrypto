@@ -59,47 +59,43 @@ final class SearchViewModel {
         
         let errorMessageRelay = PublishRelay<String>()
         
-        input.searchEnter.withLatestFrom(input.searchKeyword).distinctUntilChanged()
-            .bind(with: self) { owner, value in
+        input.searchKeyword
+            .debounce(.milliseconds(300), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .flatMapLatest { [weak self] value -> Observable<Void> in
+                guard let owner = self else { return .empty() }
+                
                 let trimmedValue = value.trimmingCharacters(in: .whitespacesAndNewlines)
                 
                 guard trimmedValue.count > 0 else {
                     print("유효한 검색어가 아닙니다.")
-                    return
+                    return .empty()
                 }
                 
                 activityIndicatrControlSeq.accept(true)
                 
-                owner.repository.getCoinWithKeyword(keyword: value) { value in
-                    let convertedOne = value.map { searchCoin in
-                        let likedOrNot = likedDataSeq.value.contains(searchCoin.id)
-                        return owner.convertOriginalToPresentable(of: searchCoin, likedOrNot: likedOrNot)
+                return Observable.create { observer in
+                    owner.repository.getCoinWithKeyword(keyword: trimmedValue) { searchResults in
+                        let convertedOne = searchResults.map { searchCoin in
+                            let likedOrNot = likedDataSeq.value.contains(searchCoin.id)
+                            return owner.convertOriginalToPresentable(of: searchCoin, likedOrNot: likedOrNot)
+                        }
+                        coinSearchResultRelay.accept(convertedOne)
+                        activityIndicatrControlSeq.accept(false)
+                        observer.onNext(())
+                        observer.onCompleted()
+                    } errorMessageFeeder: { errorMessage in
+                        errorMessageRelay.accept(errorMessage)
+                        activityIndicatrControlSeq.accept(false)
+                        observer.onError(NSError(domain: "SearchError", code: -1))
                     }
-                    coinSearchResultRelay.accept(convertedOne)
-                } errorMessageFeeder: { errorMessage in
-                    errorMessageRelay.accept(errorMessage)
+                    
+                    return Disposables.create()
                 }
-                
-                // to-point-index : not set, but likedDataArray => O(n) + O(m), 시간 복잡도
-                
-                //                let likedDataIndex = 0
-                
-                //                owner.repository.getCoinWithKeyword(keyword: value) { value in
-                //                    let convertedOne = value.map { searchCoin in
-                
-                //                      while likedDataSeq[likedDataIndex] < searchCoin.id && likedDataIndex < likedDataSeq.count - 1 {
-                //                         likedDataSeq += 1
-                //                       }
-                
-                //                        let likedOrNot = searchCoin.id == likedDataSeq[likedDataIndex]
-                //                        return owner.convertOriginalToPresentable(of: searchCoin, likedOrNot: likedOrNot)
-                //                    }
-                //                    coinSearchResultRelay.accept(convertedOne)
-                //                } errorMessageFeeder: { errorMessage in
-                //                    errorMessageRelay.accept(errorMessage)
-                //                }
-                
-            }.disposed(by: disposeBag)
+                .catch { _ in .empty() }
+            }
+            .bind { _ in }
+            .disposed(by: disposeBag)
         
         likedDataSeq.bind(with: self) {owner, value in
             let currentSearchResult = coinSearchResultRelay.value
