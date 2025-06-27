@@ -133,7 +133,7 @@ extension MarketViewController {
         childVC.removeFromParent()
         
         tabBarController?.tabBar.items?.forEach { $0.isEnabled = true }
-        tabBarController?.selectedIndex = 0
+        tabBarController?.selectedIndex = 1
         
         DispatchQueue.main.async {
             self.tabBarController?.tabBar.setNeedsLayout()

@@ -65,6 +65,16 @@ final class DetailViewController: BaseViewController {
         createSpinnerView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
+    }
+    
     func configureNavigationBar() {
         navigationItem.hidesBackButton = true
         navigationItem.leftBarButtonItem = backBarButtonItem
@@ -167,8 +177,6 @@ extension DetailViewController {
         child.didMove(toParent: self)
         
         self.childVC = child
-        
-        tabBarController?.tabBar.items?.forEach { $0.isEnabled = false }
     }
     
     private func deleteSpinnerView() {
@@ -180,14 +188,6 @@ extension DetailViewController {
         childVC.willMove(toParent: nil)
         childVC.view.removeFromSuperview()
         childVC.removeFromParent()
-        
-        tabBarController?.tabBar.items?.forEach { $0.isEnabled = true }
-        tabBarController?.selectedIndex = 1
-        
-        DispatchQueue.main.async {
-            self.tabBarController?.tabBar.setNeedsLayout()
-            self.tabBarController?.tabBar.layoutIfNeeded()
-        }
     }
 }
 

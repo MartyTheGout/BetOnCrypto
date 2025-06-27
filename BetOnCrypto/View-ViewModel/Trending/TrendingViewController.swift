@@ -157,7 +157,7 @@ extension TrendingViewController {
         childVC.removeFromParent()
         
         tabBarController?.tabBar.items?.forEach { $0.isEnabled = true }
-        tabBarController?.selectedIndex = 1
+        tabBarController?.selectedIndex = 0
         
         DispatchQueue.main.async {
             self.tabBarController?.tabBar.setNeedsLayout()

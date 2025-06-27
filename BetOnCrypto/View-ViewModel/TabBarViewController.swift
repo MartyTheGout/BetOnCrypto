@@ -23,12 +23,17 @@ final class TabBarViewController: UITabBarController {
     private func configureViewControllers() {
         
         let searchVCSymbol = DesignSystem.Icon.Info.coinAndNft.toUIImage().withTintColor(unselectedColor)
+        let searchVCSymbolSelected = DesignSystem.Icon.Info.coinAndNft.toUIImage().withTintColor(selectedColor)
         let searchNC = UINavigationController(rootViewController: TrendingViewController())
-        searchNC.tabBarItem = UITabBarItem(title: "", image: searchVCSymbol, tag: 1)
+        searchNC.tabBarItem = UITabBarItem(title: "", image: searchVCSymbol, selectedImage: searchVCSymbolSelected)
+        //UITabBarItem(title: "", image: searchVCSymbol, tag: 0)
+        
         
         let marketVCSymbol = DesignSystem.Icon.Info.exchange.toUIImage().withTintColor(unselectedColor)
+        let marketVCSymbolSelected = DesignSystem.Icon.Info.exchange.toUIImage().withTintColor(selectedColor)
         let mainNC = UINavigationController(rootViewController: MarketViewController())
-        mainNC.tabBarItem = UITabBarItem(title: "", image: marketVCSymbol, tag: 0)
+        mainNC.tabBarItem = UITabBarItem(title: "", image: marketVCSymbol, selectedImage: marketVCSymbolSelected)
+        //UITabBarItem(title: "", image: marketVCSymbol, tag: 1)
         
         setViewControllers([searchNC, mainNC], animated: true)
     }
@@ -54,7 +59,7 @@ final class TabBarViewController: UITabBarController {
     private func configureTabBarAppearance() {
         let appearance = UITabBarAppearance()
         appearance.configureWithDefaultBackground()
-
+        
         // 블러 효과 + 반투명 백그라운드 (dock 느낌)
         appearance.backgroundEffect = UIBlurEffect(style: .systemUltraThinMaterial)
         appearance.backgroundColor = UIColor.white.withAlphaComponent(0.05)

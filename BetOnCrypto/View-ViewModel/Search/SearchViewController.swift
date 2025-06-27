@@ -67,9 +67,18 @@ final class SearchViewController: BaseViewController {
         
         mainView.coinSearchResultView.collectionView.register(CoinSearchResultViewCell.self, forCellWithReuseIdentifier: CoinSearchResultViewCell.id)
         
-        
         bind()
         triggerDataStream()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        tabBarController?.tabBar.isHidden = false
     }
     
     private func configureNavigationBar() {
@@ -213,8 +222,6 @@ extension SearchViewController {
         child.didMove(toParent: self)
         
         self.childVC = child
-        
-        tabBarController?.tabBar.items?.forEach { $0.isEnabled = false }
     }
     
     private func deleteSpinnerView() {
@@ -226,9 +233,6 @@ extension SearchViewController {
         childVC.willMove(toParent: nil)
         childVC.view.removeFromSuperview()
         childVC.removeFromParent()
-        
-        tabBarController?.tabBar.items?.forEach { $0.isEnabled = true }
-        tabBarController?.selectedIndex = 1
         
         DispatchQueue.main.async {
             self.tabBarController?.tabBar.setNeedsLayout()
